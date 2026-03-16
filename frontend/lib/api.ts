@@ -27,7 +27,7 @@ async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 function districtsParam(districts: string[]): string {
-  return districts.map((d) => `districts=${encodeURIComponent(d)}`).join('&');
+  return `districts=${districts.map((d) => encodeURIComponent(d)).join(',')}`;
 }
 
 // ─── Analytics ───────────────────────────────────────────────────────────────

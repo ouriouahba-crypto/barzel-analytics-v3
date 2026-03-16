@@ -2,33 +2,34 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  LayoutDashboard,
-  GitCompare,
-  Map,
-  TrendingUp,
-  Droplets,
-  PiggyBank,
-  Calculator,
-  Star,
-  FileText,
-  Brain,
-  Bot,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
 
-const navItems = [
-  { href: '/executive', label: 'Executive', icon: LayoutDashboard },
-  { href: '/compare', label: 'Compare', icon: GitCompare },
-  { href: '/map', label: 'Map', icon: Map },
-  { href: '/pricing', label: 'Pricing', icon: TrendingUp },
-  { href: '/liquidity', label: 'Liquidity', icon: Droplets },
-  { href: '/yield', label: 'Yield', icon: PiggyBank },
-  { href: '/costs', label: 'Costs', icon: Calculator },
-  { href: '/quality', label: 'Quality', icon: Star },
-  { href: '/pdf-memo', label: 'PDF Memo', icon: FileText },
-  { href: '/predictive', label: 'Predictive', icon: Brain },
-  { href: '/ai-analyst', label: 'AI Analyst', icon: Bot },
+const NAV_GROUPS = [
+  {
+    label: 'Core Modules',
+    items: [
+      { href: '/executive', label: 'Executive' },
+      { href: '/compare',   label: 'Compare'   },
+      { href: '/map',       label: 'Map'        },
+    ],
+  },
+  {
+    label: 'Analysis',
+    items: [
+      { href: '/pricing',   label: 'Pricing'   },
+      { href: '/liquidity', label: 'Liquidity' },
+      { href: '/yield',     label: 'Yield'     },
+      { href: '/costs',     label: 'Costs'     },
+      { href: '/quality',   label: 'Quality'   },
+    ],
+  },
+  {
+    label: 'Tools',
+    items: [
+      { href: '/pdf-memo',    label: 'PDF Memo'   },
+      { href: '/predictive',  label: 'Predictive' },
+      { href: '/ai-analyst',  label: 'AI Analyst' },
+    ],
+  },
 ];
 
 export function Sidebar() {
@@ -39,62 +40,82 @@ export function Sidebar() {
       width: '220px',
       minWidth: '220px',
       height: '100vh',
-      background: '#0D0D0D',
+      background: '#0A1628',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      borderRight: '1px solid #2E2E42',
+      borderRight: '1px solid rgba(255,255,255,0.06)',
     }}>
-      {/* Logo */}
-      <div className="px-4 py-5 border-b" style={{ borderColor: '#2E2E42' }}>
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-md flex items-center justify-center"
-            style={{ background: '#C9A84C' }}>
-            <span className="text-black font-bold text-xs">B</span>
-          </div>
+
+      {/* Header / Logo */}
+      <div style={{ padding: '24px 20px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="10" width="8" height="14" fill="none" stroke="#C9A84C" strokeWidth="1.5"/>
+            <rect x="16" y="6" width="8" height="18" fill="none" stroke="#C9A84C" strokeWidth="1.5"/>
+            <line x1="2" y1="24" x2="26" y2="24" stroke="#C9A84C" strokeWidth="1.5"/>
+            <polyline points="18,2 24,6" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round"/>
+            <polyline points="24,6 22,6" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
           <div>
-            <p className="font-semibold text-sm text-white leading-none">Barzel</p>
-            <p className="text-xs leading-none mt-0.5" style={{ color: '#C9A84C' }}>Analytics</p>
+            <div style={{ color: '#FFFFFF', fontSize: '13px', fontWeight: 700, letterSpacing: '1px' }}>
+              BARZEL
+            </div>
+            <div style={{ color: '#C9A84C', fontSize: '9px', fontWeight: 500, letterSpacing: '2px', marginTop: '1px' }}>
+              ANALYTICS
+            </div>
           </div>
         </div>
+        <div style={{ height: '1px', background: 'rgba(201,168,76,0.3)' }} />
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-3 overflow-y-auto">
-        <p className="px-2 mb-2 text-xs font-medium uppercase tracking-wider"
-          style={{ color: '#9A9AAA' }}>
-          Modules
-        </p>
-        <ul className="space-y-0.5">
-          {navItems.map(({ href, label, icon: Icon }) => {
-            const isActive = pathname === href || pathname.startsWith(href + '/');
-            return (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150',
-                    isActive
-                      ? 'text-black'
-                      : 'hover:bg-white/5'
-                  )}
-                  style={isActive
-                    ? { background: '#C9A84C', color: '#000' }
-                    : { color: '#9A9AAA' }
-                  }
-                >
-                  <Icon size={16} className={isActive ? 'text-black' : ''} />
-                  <span>{label}</span>
+      <nav style={{ flex: 1, padding: '8px 0', overflowY: 'auto' }}>
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            <div style={{
+              padding: '12px 20px 6px',
+              fontSize: '9px',
+              fontWeight: 600,
+              letterSpacing: '2px',
+              color: 'rgba(255,255,255,0.3)',
+              textTransform: 'uppercase',
+            }}>
+              {group.label}
+            </div>
+            {group.items.map(({ href, label }) => {
+              const isActive = pathname === href || pathname.startsWith(href + '/');
+              return (
+                <Link key={href} href={href} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '9px 20px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  textDecoration: 'none',
+                  transition: 'all 0.15s',
+                  fontWeight: isActive ? 600 : 500,
+                  color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
+                  background: isActive ? 'rgba(30,95,168,0.2)' : 'transparent',
+                  borderLeft: isActive ? '3px solid #C9A84C' : '3px solid transparent',
+                }}>
+                  {label}
                 </Link>
-              </li>
-            );
-          })}
-        </ul>
+              );
+            })}
+          </div>
+        ))}
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t text-xs" style={{ borderColor: '#2E2E42', color: '#9A9AAA' }}>
-        v3.0.0
+      <div style={{
+        padding: '16px 20px',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+        fontSize: '10px',
+        color: 'rgba(255,255,255,0.3)',
+      }}>
+        Dubai Market · v3.0
       </div>
     </aside>
   );

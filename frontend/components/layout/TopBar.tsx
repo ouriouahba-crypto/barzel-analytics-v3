@@ -1,32 +1,46 @@
 'use client';
 
 import { useEffect } from 'react';
-import { FileText } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 
 const DEFAULT_SELECTED = ['Dubai Marina', 'JVC', 'Business Bay'];
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+const PAGE_NAMES: Record<string, string> = {
+  '/executive':  'Executive',
+  '/compare':    'Compare',
+  '/map':        'Map',
+  '/pricing':    'Pricing',
+  '/liquidity':  'Liquidity',
+  '/yield':      'Yield',
+  '/costs':      'Costs',
+  '/quality':    'Quality',
+  '/pdf-memo':   'PDF Memo',
+  '/predictive': 'Predictive',
+  '/ai-analyst': 'AI Analyst',
+};
+
 export function TopBar() {
+  const pathname = usePathname();
+  const pageName = PAGE_NAMES[pathname] ?? 'Dashboard';
+
   const {
     availableDistricts, setAvailableDistricts,
     selectedDistricts, setSelectedDistricts, toggleDistrict,
     language, setLanguage,
   } = useAppStore();
 
-  // Fetch available districts once on mount
   useEffect(() => {
     fetch(`${BASE_URL}/api/analytics/districts`)
       .then((r) => r.json())
       .then((data: { available_districts: string[] }) => {
         const all = data.available_districts;
         setAvailableDistricts(all);
-        // Pre-select first 3 defaults that exist in the dataset
         const defaults = DEFAULT_SELECTED.filter((d) => all.includes(d));
         setSelectedDistricts(defaults.length ? defaults : all.slice(0, 3));
       })
       .catch(() => {
-        // Fallback: use hardcoded list if backend unreachable
         const fallback = [
           'Al Barsha', 'Business Bay', 'DIFC', 'Downtown Dubai',
           'Dubai Hills', 'Dubai Marina', 'JVC', 'Jumeirah', 'Palm Jumeirah',
@@ -41,38 +55,57 @@ export function TopBar() {
       height: '56px',
       minHeight: '56px',
       width: '100%',
-      background: '#1A1A2E',
-      borderBottom: '1px solid #2E2E42',
+      background: '#FFFFFF',
+      borderBottom: '1px solid #D8E2EE',
+      boxShadow: '0 1px 3px rgba(10,22,40,0.06)',
       display: 'flex',
       alignItems: 'center',
-      padding: '0 20px',
+      padding: '0 24px',
       gap: '16px',
       overflow: 'hidden',
     }}>
-      {/* Label */}
-      <span className="text-xs font-medium shrink-0" style={{ color: '#9A9AAA' }}>
-        Markets:
+
+      {/* Breadcrumb */}
+      <div style={{ fontSize: '13px', fontWeight: 600, color: '#0A1628', whiteSpace: 'nowrap', flexShrink: 0 }}>
+        {pageName}
+        <span style={{ color: '#7A90A8', fontWeight: 400, margin: '0 6px' }}>/</span>
+        <span style={{ color: '#7A90A8', fontWeight: 400 }}>Dubai</span>
+      </div>
+
+      {/* Separator */}
+      <div style={{ width: '1px', height: '20px', background: '#D8E2EE', flexShrink: 0 }} />
+
+      {/* Markets label */}
+      <span style={{
+        fontSize: '9px', fontWeight: 600, letterSpacing: '2px',
+        color: '#7A90A8', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0,
+      }}>
+        Markets
       </span>
 
-      {/* Scrollable chip row */}
-      <div className="flex items-center gap-2 overflow-x-auto flex-1 min-w-0 scrollbar-none">
+      {/* Chips scrollables */}
+      <div style={{
+        display: 'flex', gap: '6px', overflowX: 'auto', flex: 1,
+        scrollbarWidth: 'none', msOverflowStyle: 'none',
+      } as React.CSSProperties}>
         {availableDistricts.map((district) => {
-          const active = selectedDistricts.includes(district);
+          const isSelected = selectedDistricts.includes(district);
           return (
             <button
               key={district}
               onClick={() => toggleDistrict(district)}
-              className="shrink-0 transition-all duration-150 hover:opacity-80 active:scale-95"
               style={{
-                padding: '5px 14px',
-                borderRadius: 20,
-                fontSize: 12,
-                fontWeight: active ? 600 : 400,
-                background: active ? '#C9A84C' : '#0D0D0D',
-                color: active ? '#0D0D0D' : '#9A9AAA',
-                border: `1px solid ${active ? '#C9A84C' : '#2E2E42'}`,
-                cursor: 'pointer',
+                padding: '5px 12px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: isSelected ? 600 : 500,
                 whiteSpace: 'nowrap',
+                flexShrink: 0,
+                transition: 'all 0.15s',
+                background: isSelected ? '#0A1628' : '#F4F6F9',
+                color: isSelected ? '#FFFFFF' : '#3D5470',
+                border: `1px solid ${isSelected ? '#0A1628' : '#D8E2EE'}`,
+                outline: 'none',
               }}
             >
               {district}
@@ -81,39 +114,47 @@ export function TopBar() {
         })}
       </div>
 
-      {/* Separator */}
-      <div className="w-px h-6 shrink-0" style={{ background: '#2E2E42' }} />
+      {/* Right controls */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, whiteSpace: 'nowrap' }}>
 
-      {/* Language toggle */}
-      <div
-        className="flex items-center rounded-md overflow-hidden border shrink-0"
-        style={{ borderColor: '#2E2E42' }}
-      >
-        {(['fr', 'en'] as const).map((lang) => (
-          <button
-            key={lang}
-            onClick={() => setLanguage(lang)}
-            className="px-3 py-1 text-xs font-medium transition-all"
-            style={
-              language === lang
-                ? { background: '#C9A84C', color: '#000' }
-                : { background: 'transparent', color: '#9A9AAA' }
-            }
-          >
-            {lang.toUpperCase()}
-          </button>
-        ))}
+        {/* Lang toggle */}
+        <div style={{ display: 'flex', gap: '2px' }}>
+          {(['FR', 'EN'] as const).map((l) => (
+            <button
+              key={l}
+              onClick={() => setLanguage(l.toLowerCase() as 'fr' | 'en')}
+              style={{
+                padding: '4px 8px',
+                fontSize: '11px',
+                fontWeight: language === l.toLowerCase() ? 700 : 400,
+                color: language === l.toLowerCase() ? '#0A1628' : '#7A90A8',
+                background: 'none',
+                borderRadius: '3px',
+                outline: 'none',
+              }}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+
+        {/* Export PDF */}
+        <button
+          onClick={() => window.location.assign('/pdf-memo')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            padding: '7px 14px',
+            background: '#0A1628', color: '#FFFFFF',
+            borderRadius: '4px', fontSize: '12px', fontWeight: 500,
+            outline: 'none',
+          }}
+        >
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+            <path d="M6.5 1v8M3 6.5l3.5 3.5 3.5-3.5M1 11h11" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          Export PDF
+        </button>
       </div>
-
-      {/* PDF button */}
-      <button
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium shrink-0 transition-all hover:opacity-80"
-        style={{ background: '#252538', color: '#C9A84C', border: '1px solid #2E2E42' }}
-        onClick={() => window.location.assign('/pdf-memo')}
-      >
-        <FileText size={13} />
-        PDF
-      </button>
     </header>
   );
 }

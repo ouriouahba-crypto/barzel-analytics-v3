@@ -52,6 +52,12 @@ def _parse_districts(raw: Optional[str]) -> list[str]:
 # ─────────────────────────────────────────────
 # GET /api/analytics/snapshot
 # ─────────────────────────────────────────────
+@router.get("/districts")
+async def districts():
+    """Return all available district names (used to populate UI chips)."""
+    return {"available_districts": ALL_DISTRICTS}
+
+
 @router.get("/snapshot")
 async def snapshot(
     districts: Optional[str] = Query(None, description="Comma-separated district names"),
@@ -59,9 +65,12 @@ async def snapshot(
     """
     Aggregate KPIs for the selected districts (combined).
     If no districts supplied, returns market-wide aggregate.
+    Always includes available_districts for client bootstrapping.
     """
     d = _parse_districts(districts)
-    return get_snapshot(d)
+    result = get_snapshot(d)
+    result["available_districts"] = ALL_DISTRICTS
+    return result
 
 
 # ─────────────────────────────────────────────

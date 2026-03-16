@@ -16,9 +16,11 @@ export interface Listing {
 }
 
 interface AppState {
+  availableDistricts: string[];
   selectedDistricts: string[];
   listings: Listing[];
   language: 'en' | 'fr';
+  setAvailableDistricts: (districts: string[]) => void;
   setSelectedDistricts: (districts: string[]) => void;
   toggleDistrict: (district: string) => void;
   setListings: (listings: Listing[]) => void;
@@ -26,9 +28,13 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
+  availableDistricts: [],
   selectedDistricts: [],
   listings: [],
   language: 'fr',
+
+  setAvailableDistricts: (districts) =>
+    set({ availableDistricts: districts }),
 
   setSelectedDistricts: (districts) =>
     set({ selectedDistricts: districts }),

@@ -71,7 +71,7 @@ function CardHeader({ title, subtitle }: { title: string; subtitle: string }) {
 }
 
 export default function YieldPage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
 
   const [yieldData, setYieldData]     = useState<YieldBucket[]>([]);
   const [compareData, setCompare]     = useState<CompareItem[]>([]);
@@ -88,7 +88,7 @@ export default function YieldPage() {
       getYieldDistribution(selectedDistricts),
       getCompare(selectedDistricts),
       getPriceScatter(selectedDistricts),
-      getInsights(selectedDistricts),
+      getInsights(selectedDistricts, language),
     ]).then(([yd, cmp, sc, ins]) => {
       setYieldData(yd.data);
       setCompare(cmp.data);
@@ -99,7 +99,7 @@ export default function YieldPage() {
       setError(e.message ?? 'Erreur de chargement');
       setLoading(false);
     });
-  }, [selectedDistricts]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── KPI aggregates ────────────────────────────────────────────────────────
   const n = compareData.length;

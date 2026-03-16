@@ -77,7 +77,7 @@ function CardHeader({ title, subtitle }: { title: string; subtitle: string }) {
 }
 
 export default function CostsPage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
 
   const [compareData, setCompare]   = useState<CompareItem[]>([]);
   const [, setTypology]             = useState<ServiceChargeTypology[]>([]);
@@ -92,7 +92,7 @@ export default function CostsPage() {
     Promise.all([
       getCompare(selectedDistricts),
       getServiceChargeTypology(selectedDistricts),
-      getInsights(selectedDistricts),
+      getInsights(selectedDistricts, language),
     ]).then(([cmp, typ, ins]) => {
       setCompare(cmp.data);
       setTypology(typ.data);
@@ -102,7 +102,7 @@ export default function CostsPage() {
       setError(e.message ?? 'Erreur de chargement');
       setLoading(false);
     });
-  }, [selectedDistricts]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── KPI aggregates ────────────────────────────────────────────────────────
   const n = compareData.length;

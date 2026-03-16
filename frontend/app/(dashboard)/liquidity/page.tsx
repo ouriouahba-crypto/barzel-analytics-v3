@@ -78,7 +78,7 @@ function CardHeader({ title, subtitle }: { title: string; subtitle: string }) {
 }
 
 export default function LiquidityPage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
 
   const [domData, setDomData]       = useState<DomBucket[]>([]);
   const [compareData, setCompare]   = useState<CompareItem[]>([]);
@@ -93,7 +93,7 @@ export default function LiquidityPage() {
     Promise.all([
       getDomDistribution(selectedDistricts),
       getCompare(selectedDistricts),
-      getInsights(selectedDistricts),
+      getInsights(selectedDistricts, language),
     ]).then(([dom, cmp, ins]) => {
       setDomData(dom.data);
       setCompare(cmp.data);
@@ -103,7 +103,7 @@ export default function LiquidityPage() {
       setError(e.message ?? 'Erreur de chargement');
       setLoading(false);
     });
-  }, [selectedDistricts]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Aggregate KPIs from compareData ──────────────────────────────────────
   const n = compareData.length;

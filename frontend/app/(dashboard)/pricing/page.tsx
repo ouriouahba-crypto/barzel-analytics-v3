@@ -91,7 +91,7 @@ const tooltipStyle = {
 };
 
 export default function PricingPage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
 
   const [distBuckets, setDistBuckets] = useState<PriceBucket[]>([]);
   const [scatter, setScatter]         = useState<PriceScatterPoint[]>([]);
@@ -108,7 +108,7 @@ export default function PricingPage() {
       getPriceDistribution(selectedDistricts),
       getPriceScatter(selectedDistricts),
       getTimeseries(selectedDistricts),
-      getInsights(selectedDistricts),
+      getInsights(selectedDistricts, language),
     ]).then(([dist, sc, ts, ins]) => {
       setDistBuckets(dist.data);
       setScatter(sc.data);
@@ -119,7 +119,7 @@ export default function PricingPage() {
       setError(e.message ?? 'Erreur de chargement');
       setLoading(false);
     });
-  }, [selectedDistricts]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Timeseries pivot ──────────────────────────────────────────────────────
   const timeseriesData: Record<string, string | number>[] = (() => {

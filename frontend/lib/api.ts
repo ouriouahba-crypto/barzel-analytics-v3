@@ -131,7 +131,7 @@ export async function checkHealth(): Promise<{ status: string }> {
   return fetchApi<{ status: string }>('/api/health');
 }
 
-export async function getInsights(districts: string[]): Promise<Record<string, any>> {
-  const q = districts.length ? `?${districtsParam(districts)}` : '';
+export async function getInsights(districts: string[], lang: string = 'fr'): Promise<Record<string, any>> {
+  const q = districts.length ? `?${districtsParam(districts)}&lang=${lang}` : `?lang=${lang}`;
   return fetchApi<Record<string, any>>(`/api/analytics/insights${q}`);
 }

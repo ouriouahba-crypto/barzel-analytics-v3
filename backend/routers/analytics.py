@@ -239,8 +239,9 @@ async def data_quality(
 @router.get("/insights")
 async def insights(
     districts: Optional[str] = Query(None, description="Comma-separated district names"),
+    lang: Optional[str] = Query("fr"),
 ):
     """Dynamic text insights for all dashboard pages."""
     d = _parse_districts(districts)
     from services.insights_engine import get_all_insights
-    return get_all_insights(d)
+    return get_all_insights(d, lang=lang or "fr")

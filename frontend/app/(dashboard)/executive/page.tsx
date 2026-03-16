@@ -212,7 +212,7 @@ export default function ExecutivePage() {
       getTimeseries(selectedDistricts),
       getTypology(selectedDistricts),
       getScore(selectedDistricts),
-      getInsights(selectedDistricts),
+      getInsights(selectedDistricts, language),
     ])
       .then(([snap, mkt, ts, typo, score, ins]) => {
         setSnapshot(snap); setMktSnap(mkt);
@@ -221,7 +221,7 @@ export default function ExecutivePage() {
       })
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [selectedDistricts]);
+  }, [selectedDistricts, language]);
 
   // ── Empty state ────────────────────────────────────────────────────────────
   if (selectedDistricts.length === 0) {

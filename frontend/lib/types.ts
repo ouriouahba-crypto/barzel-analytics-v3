@@ -118,6 +118,22 @@ export interface MapListingsResponse {
   data: MapListing[];
 }
 
+// ─── Costs ───────────────────────────────────────────────────────────────────
+
+export interface ServiceChargeTypology {
+  district: string;
+  bedrooms: number;
+  median_service_charge: number;
+  median_net_yield: number;
+  median_gross_yield: number;
+  cost_to_yield_ratio: number | null;
+  count: number;
+}
+
+export interface ServiceChargeTypologyResponse {
+  data: ServiceChargeTypology[];
+}
+
 // ─── Pricing ─────────────────────────────────────────────────────────────────
 
 export interface PriceBucket {

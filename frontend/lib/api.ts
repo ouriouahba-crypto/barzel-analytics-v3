@@ -9,6 +9,7 @@ import {
   MapListingsResponse,
   PriceDistributionResponse,
   PriceScatterResponse,
+  ServiceChargeTypologyResponse,
   PredictInput,
   PredictOutput,
   AskRequest,
@@ -83,6 +84,11 @@ export async function getPriceDistribution(districts: string[]): Promise<PriceDi
 export async function getPriceScatter(districts: string[]): Promise<PriceScatterResponse> {
   const q = districts.length ? `?${districtsParam(districts)}` : '';
   return fetchApi<PriceScatterResponse>(`/api/analytics/price-scatter${q}`);
+}
+
+export async function getServiceChargeTypology(districts: string[]): Promise<ServiceChargeTypologyResponse> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<ServiceChargeTypologyResponse>(`/api/analytics/service-charge-typology${q}`);
 }
 
 // ─── Predict ─────────────────────────────────────────────────────────────────

@@ -291,3 +291,29 @@ def get_price_scatter(districts: list[str], sample_max: int = 1500) -> list[dict
     if len(out) > sample_max:
         out = out.sample(sample_max, random_state=42)
     return out.to_dict(orient="records")
+
+
+def get_service_charge_by_typology(districts: list[str]) -> list[dict]:
+    """Service charge breakdown by district x bedrooms."""
+    sub = _filter(districts)
+    targets = districts if districts else ALL_DISTRICTS
+    results = []
+    for d in targets:
+        d_sub = sub[sub["district"] == d]
+        for beds, grp in d_sub.groupby("bedrooms"):
+            med_sc    = grp["service_charge_aed_per_sqm_year"].median()
+            med_net   = grp["net_yield_est_pct"].median()
+            med_gross = grp["gross_yield_pct"].median()
+            med_rent  = grp["annual_rent_aed"].median()
+            med_sqm   = grp["size_sqm"].median()
+            ratio     = (med_sc / (med_rent / med_sqm) * 100) if med_rent > 0 and med_sqm > 0 else None
+            results.append({
+                "district":              d,
+                "bedrooms":              int(beds),
+                "median_service_charge": _safe(med_sc),
+                "median_net_yield":      _pct(med_net),
+                "median_gross_yield":    _pct(med_gross),
+                "cost_to_yield_ratio":   _pct(ratio),
+                "count":                 len(grp),
+            })
+    return results

@@ -26,6 +26,7 @@ from services.kpi_engine import (
     get_map_listings,
     get_price_distribution,
     get_price_scatter,
+    get_service_charge_by_typology,
     ALL_DISTRICTS,
 )
 from services.barzel_score import (
@@ -205,3 +206,15 @@ async def price_scatter(
     """Scatter data: size vs price per sqm."""
     d = _parse_districts(districts)
     return {"data": get_price_scatter(d)}
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/service-charge-typology
+# ─────────────────────────────────────────────
+@router.get("/service-charge-typology")
+async def service_charge_typology(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """Service charges by district and bedroom count."""
+    d = _parse_districts(districts)
+    return {"data": get_service_charge_by_typology(d)}

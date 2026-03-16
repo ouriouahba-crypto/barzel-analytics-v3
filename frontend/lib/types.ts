@@ -118,6 +118,29 @@ export interface MapListingsResponse {
   data: MapListing[];
 }
 
+// ─── Quality ─────────────────────────────────────────────────────────────────
+
+export interface QualityField {
+  column: string;
+  label: string;
+  filled: number;
+  total: number;
+  completeness_pct: number;
+}
+
+export interface QualityDistrict {
+  district: string;
+  n_listings: number;
+  completeness_pct: number;
+}
+
+export interface DataQualityResponse {
+  n_listings: number;
+  overall_completeness: number;
+  fields: QualityField[];
+  by_district: QualityDistrict[];
+}
+
 // ─── Costs ───────────────────────────────────────────────────────────────────
 
 export interface ServiceChargeTypology {

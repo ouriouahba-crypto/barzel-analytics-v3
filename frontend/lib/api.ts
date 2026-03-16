@@ -10,6 +10,7 @@ import {
   PriceDistributionResponse,
   PriceScatterResponse,
   ServiceChargeTypologyResponse,
+  DataQualityResponse,
   PredictInput,
   PredictOutput,
   AskRequest,
@@ -89,6 +90,11 @@ export async function getPriceScatter(districts: string[]): Promise<PriceScatter
 export async function getServiceChargeTypology(districts: string[]): Promise<ServiceChargeTypologyResponse> {
   const q = districts.length ? `?${districtsParam(districts)}` : '';
   return fetchApi<ServiceChargeTypologyResponse>(`/api/analytics/service-charge-typology${q}`);
+}
+
+export async function getDataQuality(districts: string[]): Promise<DataQualityResponse> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<DataQualityResponse>(`/api/analytics/data-quality${q}`);
 }
 
 // ─── Predict ─────────────────────────────────────────────────────────────────

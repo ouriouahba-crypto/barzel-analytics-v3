@@ -27,6 +27,7 @@ from services.kpi_engine import (
     get_price_distribution,
     get_price_scatter,
     get_service_charge_by_typology,
+    get_data_quality,
     ALL_DISTRICTS,
 )
 from services.barzel_score import (
@@ -218,3 +219,15 @@ async def service_charge_typology(
     """Service charges by district and bedroom count."""
     d = _parse_districts(districts)
     return {"data": get_service_charge_by_typology(d)}
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/data-quality
+# ─────────────────────────────────────────────
+@router.get("/data-quality")
+async def data_quality(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """Data completeness analysis."""
+    d = _parse_districts(districts)
+    return get_data_quality(d)

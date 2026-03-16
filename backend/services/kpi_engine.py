@@ -293,6 +293,87 @@ def get_price_scatter(districts: list[str], sample_max: int = 1500) -> list[dict
     return out.to_dict(orient="records")
 
 
+def get_data_quality(districts: list[str]) -> dict:
+    """Compute data completeness metrics."""
+    sub = _filter(districts)
+    n = len(sub)
+    if n == 0:
+        return {"n_listings": 0, "fields": [], "overall_completeness": 0, "by_district": []}
+
+    key_fields = [
+        ("sale_price_aed",                  "Sale Price"),
+        ("price_per_sqm_aed",               "Price/sqm"),
+        ("size_sqm",                        "Size (sqm)"),
+        ("bedrooms",                        "Bedrooms"),
+        ("bathrooms",                       "Bathrooms"),
+        ("property_type",                   "Property Type"),
+        ("days_on_market",                  "Days on Market"),
+        ("gross_yield_pct",                 "Gross Yield"),
+        ("net_yield_est_pct",               "Net Yield"),
+        ("annual_rent_aed",                 "Annual Rent"),
+        ("service_charge_aed_per_sqm_year", "Service Charge"),
+        ("vacancy_days_est",                "Vacancy Est."),
+        ("latitude",                        "Latitude"),
+        ("longitude",                       "Longitude"),
+        ("view_quality",                    "View Quality"),
+        ("renovation_status",               "Renovation Status"),
+        ("floor",                           "Floor"),
+        ("age_years",                       "Age (years)"),
+        ("dist_to_metro_m",                 "Dist. to Metro"),
+        ("dist_to_beach_m",                 "Dist. to Beach"),
+        ("price_trend_3m",                  "Price Trend 3m"),
+        ("price_trend_6m",                  "Price Trend 6m"),
+        ("price_trend_12m",                 "Price Trend 12m"),
+        ("first_seen",                      "First Seen"),
+        ("last_seen",                       "Last Seen"),
+    ]
+
+    fields = []
+    total_fill = 0.0
+    for col, label in key_fields:
+        if col in sub.columns:
+            filled = int(sub[col].notna().sum())
+            pct    = round(filled / n * 100, 1)
+        else:
+            filled = 0
+            pct    = 0.0
+        fields.append({
+            "column":           col,
+            "label":            label,
+            "filled":           filled,
+            "total":            n,
+            "completeness_pct": pct,
+        })
+        total_fill += pct
+
+    overall = round(total_fill / len(key_fields), 1) if key_fields else 0
+
+    targets = districts if districts else ALL_DISTRICTS
+    by_district = []
+    for d in targets:
+        d_sub = sub[sub["district"] == d]
+        dn = len(d_sub)
+        if dn == 0:
+            continue
+        d_fill = 0.0
+        for col, _ in key_fields:
+            if col in d_sub.columns:
+                d_fill += d_sub[col].notna().sum() / dn * 100
+        by_district.append({
+            "district":         d,
+            "n_listings":       dn,
+            "completeness_pct": round(d_fill / len(key_fields), 1),
+        })
+    by_district.sort(key=lambda x: x["completeness_pct"], reverse=True)
+
+    return {
+        "n_listings":           n,
+        "overall_completeness": overall,
+        "fields":               fields,
+        "by_district":          by_district,
+    }
+
+
 def get_service_charge_by_typology(districts: list[str]) -> list[dict]:
     """Service charge breakdown by district x bedrooms."""
     sub = _filter(districts)

@@ -368,7 +368,7 @@ export default function ExecutivePage() {
       </div>
 
       {insights && insights.synthesis && (
-        <InsightBox color="blue" title="Synthèse marché">
+        <InsightBox color="blue" title={language === 'fr' ? 'Synthèse marché' : 'Market summary'}>
           <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
         </InsightBox>
       )}
@@ -499,12 +499,12 @@ export default function ExecutivePage() {
       </Card>
 
       {insights && insights.highlight && (
-        <InsightBox color="gold" title="Point clé">
+        <InsightBox color="gold" title={language === 'fr' ? 'Point clé' : 'Key insight'}>
           <span dangerouslySetInnerHTML={{ __html: insights.highlight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
         </InsightBox>
       )}
       {insights && insights.warning && (
-        <InsightBox color="green" title="Point de vigilance">
+        <InsightBox color="green" title={language === 'fr' ? 'Point de vigilance' : 'Watch point'}>
           <span dangerouslySetInnerHTML={{ __html: insights.warning.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
         </InsightBox>
       )}

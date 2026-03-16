@@ -185,7 +185,7 @@ export default function LiquidityPage() {
           </div>
 
           {insights && insights.synthesis && (
-            <InsightBox color="blue" title="Synthèse liquidité">
+            <InsightBox color="blue" title={language === 'fr' ? 'Synthèse liquidité' : 'Liquidity summary'}>
               <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -227,7 +227,7 @@ export default function LiquidityPage() {
           </div>
 
           {insights && insights.chart_insight && (
-            <InsightBox color="gold" title="Ce que révèle la distribution">
+            <InsightBox color="gold" title={language === 'fr' ? 'Ce que révèle la distribution' : 'What the distribution reveals'}>
               <span dangerouslySetInnerHTML={{ __html: insights.chart_insight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -296,7 +296,7 @@ export default function LiquidityPage() {
             </div>
           </div>
           {insights && insights.verdict && (
-            <InsightBox color="green" title="Verdict liquidité">
+            <InsightBox color="green" title={language === 'fr' ? 'Verdict liquidité' : 'Liquidity verdict'}>
               <span dangerouslySetInnerHTML={{ __html: insights.verdict.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}

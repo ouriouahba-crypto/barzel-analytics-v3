@@ -179,7 +179,7 @@ export default function CostsPage() {
           </div>
 
           {insights && insights.synthesis && (
-            <InsightBox color="blue" title="Synthèse charges">
+            <InsightBox color="blue" title={language === 'fr' ? 'Synthèse charges' : 'Cost summary'}>
               <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -206,7 +206,7 @@ export default function CostsPage() {
           </div>
 
           {insights && insights.chart_insight && (
-            <InsightBox color="gold" title="Ce que révèlent les charges">
+            <InsightBox color="gold" title={language === 'fr' ? 'Ce que révèlent les charges' : 'What the charges reveal'}>
               <span dangerouslySetInnerHTML={{ __html: insights.chart_insight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -304,7 +304,7 @@ export default function CostsPage() {
           </div>
 
           {insights && insights.verdict && (
-            <InsightBox color="green" title="Verdict coûts">
+            <InsightBox color="green" title={language === 'fr' ? 'Verdict coûts' : 'Cost verdict'}>
               <span dangerouslySetInnerHTML={{ __html: insights.verdict.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}

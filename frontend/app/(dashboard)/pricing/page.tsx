@@ -229,7 +229,7 @@ export default function PricingPage() {
           </div>
 
           {insights && insights.chart_insight && (
-            <InsightBox color="gold" title="Dynamique des prix">
+            <InsightBox color="gold" title={language === 'fr' ? 'Dynamique des prix' : 'Price dynamics'}>
               <span dangerouslySetInnerHTML={{ __html: insights.chart_insight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -304,7 +304,7 @@ export default function PricingPage() {
           </div>
 
           {insights && insights.verdict && (
-            <InsightBox color="green" title="Verdict pricing">
+            <InsightBox color="green" title={language === 'fr' ? 'Verdict pricing' : 'Pricing verdict'}>
               <span dangerouslySetInnerHTML={{ __html: insights.verdict.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -341,7 +341,7 @@ export default function PricingPage() {
           </div>
 
           {insights && insights.synthesis && (
-            <InsightBox color="blue" title="Synthèse prix">
+            <InsightBox color="blue" title={language === 'fr' ? 'Synthèse prix' : 'Pricing summary'}>
               <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}

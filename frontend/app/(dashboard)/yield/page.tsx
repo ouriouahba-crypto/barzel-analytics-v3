@@ -183,7 +183,7 @@ export default function YieldPage() {
           </div>
 
           {insights && insights.synthesis && (
-            <InsightBox color="blue" title="Synthèse rendement">
+            <InsightBox color="blue" title={language === 'fr' ? 'Synthèse rendement' : 'Yield summary'}>
               <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -203,7 +203,7 @@ export default function YieldPage() {
           </div>
 
           {insights && insights.chart_insight && (
-            <InsightBox color="gold" title="Ce que révèle la distribution">
+            <InsightBox color="gold" title={language === 'fr' ? 'Ce que révèle la distribution' : 'What the distribution reveals'}>
               <span dangerouslySetInnerHTML={{ __html: insights.chart_insight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}
@@ -286,7 +286,7 @@ export default function YieldPage() {
           </div>
 
           {insights && insights.verdict && (
-            <InsightBox color="green" title="Verdict rendement">
+            <InsightBox color="green" title={language === 'fr' ? 'Verdict rendement' : 'Yield verdict'}>
               <span dangerouslySetInnerHTML={{ __html: insights.verdict.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
             </InsightBox>
           )}

@@ -5,5 +5,5 @@ scikit-learn==1.5.0
 numpy==1.26.4
 reportlab==4.2.0
 python-multipart==0.0.9
-anthropic==0.29.0
+anthropic>=0.40.0
 python-dotenv==1.0.1

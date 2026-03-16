@@ -84,7 +84,7 @@ export default function AiAnalystPage() {
           AI Analyst
         </div>
         <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7A90A8', marginTop: 4 }}>
-          Posez vos questions sur le marché Dubai · Powered by Claude
+          Posez vos questions sur le marché Dubai
         </div>
         <div style={{ width: 40, height: 2, background: '#C9A84C', marginTop: 8 }} />
       </div>

@@ -8,7 +8,7 @@ import {
 } from 'recharts';
 
 import { useAppStore } from '@/lib/store';
-import { getSnapshot, getTimeseries, getTypology, getScore } from '@/lib/api';
+import { getSnapshot, getTimeseries, getTypology, getScore, getInsights } from '@/lib/api';
 import type { SnapshotResponse, TimeseriesPoint, TypologyItem, ScoreResponse } from '@/lib/types';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -115,6 +115,28 @@ function buildSignals(snap: SnapshotResponse, lang: 'fr' | 'en') {
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
+function InsightBox({ color, title, children }: { color: 'blue' | 'gold' | 'green'; title: string; children: React.ReactNode }) {
+  const configs = {
+    blue:  { bg: '#E8F1FA', border: '#1E5FA8', titleColor: '#1E5FA8', icon: '📊' },
+    gold:  { bg: '#F5EDD6', border: '#C9A84C', titleColor: '#8B7A3A', icon: '💡' },
+    green: { bg: '#E8F5EE', border: '#1A7A4A', titleColor: '#1A7A4A', icon: '✅' },
+  };
+  const c = configs[color];
+  return (
+    <div style={{
+      background: c.bg, borderLeft: `3px solid ${c.border}`,
+      borderRadius: '0 8px 8px 0', padding: '12px 16px', marginBottom: 20,
+    }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: c.titleColor, marginBottom: 4 }}>
+        {c.icon} {title}
+      </div>
+      <div style={{ fontSize: 12, color: '#3D5470', lineHeight: 1.6 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function Skel({ w, h, radius = 6 }: { w: string | number; h: number; radius?: number }) {
   return (
     <div style={{
@@ -176,6 +198,7 @@ export default function ExecutivePage() {
   const [scoreData,  setScoreData]  = useState<ScoreResponse | null>(null);
   const [loading,    setLoading]    = useState(false);
   const [error,      setError]      = useState<string | null>(null);
+  const [insights,   setInsights]   = useState<any>(null);
 
   useEffect(() => {
     if (selectedDistricts.length === 0) {
@@ -189,10 +212,12 @@ export default function ExecutivePage() {
       getTimeseries(selectedDistricts),
       getTypology(selectedDistricts),
       getScore(selectedDistricts),
+      getInsights(selectedDistricts),
     ])
-      .then(([snap, mkt, ts, typo, score]) => {
+      .then(([snap, mkt, ts, typo, score, ins]) => {
         setSnapshot(snap); setMktSnap(mkt);
         setTimeseries(ts.data); setTypology(typo.data); setScoreData(score);
+        setInsights(ins.executive);
       })
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
@@ -342,6 +367,12 @@ export default function ExecutivePage() {
         })}
       </div>
 
+      {insights && insights.synthesis && (
+        <InsightBox color="blue" title="Synthèse marché">
+          <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+        </InsightBox>
+      )}
+
       {/* ── Charts ──────────────────────────────────────────────────────────── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 0.65fr', gap: '16px', marginBottom: '24px' }}>
 
@@ -466,6 +497,17 @@ export default function ExecutivePage() {
           </div>
         )}
       </Card>
+
+      {insights && insights.highlight && (
+        <InsightBox color="gold" title="Point clé">
+          <span dangerouslySetInnerHTML={{ __html: insights.highlight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+        </InsightBox>
+      )}
+      {insights && insights.warning && (
+        <InsightBox color="green" title="Point de vigilance">
+          <span dangerouslySetInnerHTML={{ __html: insights.warning.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+        </InsightBox>
+      )}
 
       {/* ── Key Signals ──────────────────────────────────────────────────────── */}
       {!loading && signals.length > 0 && (

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAppStore } from '@/lib/store';
-import { getYieldDistribution, getCompare, getPriceScatter } from '@/lib/api';
+import { getYieldDistribution, getCompare, getPriceScatter, getInsights } from '@/lib/api';
 import type { YieldBucket, CompareItem, PriceScatterPoint } from '@/lib/types';
 import {
   ResponsiveContainer,
@@ -38,6 +38,28 @@ const CARD_STYLE: React.CSSProperties = {
   padding: '20px 24px',
 };
 
+function InsightBox({ color, title, children }: { color: 'blue' | 'gold' | 'green'; title: string; children: React.ReactNode }) {
+  const configs = {
+    blue:  { bg: '#E8F1FA', border: '#1E5FA8', titleColor: '#1E5FA8', icon: '📊' },
+    gold:  { bg: '#F5EDD6', border: '#C9A84C', titleColor: '#8B7A3A', icon: '💡' },
+    green: { bg: '#E8F5EE', border: '#1A7A4A', titleColor: '#1A7A4A', icon: '✅' },
+  };
+  const c = configs[color];
+  return (
+    <div style={{
+      background: c.bg, borderLeft: `3px solid ${c.border}`,
+      borderRadius: '0 8px 8px 0', padding: '12px 16px', marginBottom: 20,
+    }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: c.titleColor, marginBottom: 4 }}>
+        {c.icon} {title}
+      </div>
+      <div style={{ fontSize: 12, color: '#3D5470', lineHeight: 1.6 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function CardHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <>
@@ -56,6 +78,7 @@ export default function YieldPage() {
   const [scatterData, setScatter]     = useState<PriceScatterPoint[]>([]);
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState<string | null>(null);
+  const [insights, setInsights]       = useState<any>(null);
 
   useEffect(() => {
     if (selectedDistricts.length === 0) { setLoading(false); return; }
@@ -65,10 +88,12 @@ export default function YieldPage() {
       getYieldDistribution(selectedDistricts),
       getCompare(selectedDistricts),
       getPriceScatter(selectedDistricts),
-    ]).then(([yd, cmp, sc]) => {
+      getInsights(selectedDistricts),
+    ]).then(([yd, cmp, sc, ins]) => {
       setYieldData(yd.data);
       setCompare(cmp.data);
       setScatter(sc.data);
+      setInsights(ins.yield);
       setLoading(false);
     }).catch((e) => {
       setError(e.message ?? 'Erreur de chargement');
@@ -157,6 +182,12 @@ export default function YieldPage() {
             ))}
           </div>
 
+          {insights && insights.synthesis && (
+            <InsightBox color="blue" title="Synthèse rendement">
+              <span dangerouslySetInnerHTML={{ __html: insights.synthesis.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+            </InsightBox>
+          )}
+
           {/* ── Section 2 : Yield distribution ────────────────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
             <CardHeader title="Distribution du rendement brut" subtitle="Tranches de 0.5% — gross yield" />
@@ -170,6 +201,12 @@ export default function YieldPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+
+          {insights && insights.chart_insight && (
+            <InsightBox color="gold" title="Ce que révèle la distribution">
+              <span dangerouslySetInnerHTML={{ __html: insights.chart_insight.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+            </InsightBox>
+          )}
 
           {/* ── Section 3 : Scatter + Ranking ─────────────────────────────── */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
@@ -247,6 +284,12 @@ export default function YieldPage() {
               </ResponsiveContainer>
             </div>
           </div>
+
+          {insights && insights.verdict && (
+            <InsightBox color="green" title="Verdict rendement">
+              <span dangerouslySetInnerHTML={{ __html: insights.verdict.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') }} />
+            </InsightBox>
+          )}
         </>
       )}
     </div>

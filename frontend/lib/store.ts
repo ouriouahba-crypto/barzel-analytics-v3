@@ -1,5 +1,19 @@
 import { create } from 'zustand';
-import { Listing } from './types';
+
+// Minimal listing shape for global store (raw CSV row subset)
+export interface Listing {
+  id: string;
+  district: string;
+  sale_price_aed: number;
+  price_per_sqm_aed: number;
+  size_sqm: number;
+  bedrooms: number;
+  property_type: string;
+  days_on_market: number;
+  latitude: number;
+  longitude: number;
+  first_seen: string;
+}
 
 interface AppState {
   selectedDistricts: string[];

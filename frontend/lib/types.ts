@@ -1,86 +1,153 @@
-export interface District {
-  id: string;
-  name: string;
-  city: string;
-  coordinates: [number, number]; // [lat, lng]
+// ─── Backend API response shapes ───────────────────────────────────────────
+
+export interface SnapshotResponse {
+  n_listings: number;
+  median_price_sqm: number;
+  p25_price_sqm: number;
+  p75_price_sqm: number;
+  median_dom: number;
+  fast_sale_30d_pct: number;
+  fast_sale_60d_pct: number;
+  median_gross_yield: number;
+  median_net_yield: number;
+  median_vacancy_days: number;
+  median_service_charge: number;
+  price_consistency_cv: number;
+  liquidity_depth_ratio: number;
+  price_trend_3m: number;
+  price_trend_6m: number;
+  price_trend_12m: number;
+  districts: string[];
 }
 
-export interface Listing {
-  id: string;
+export interface CompareItem extends SnapshotResponse {
   district: string;
-  city: string;
-  price: number;
-  pricePerSqm: number;
-  surface: number;
-  rooms: number;
-  propertyType: 'apartment' | 'house' | 'commercial';
-  daysOnMarket: number;
-  yearBuilt: number;
-  floor?: number;
-  hasParking: boolean;
-  hasBalcony: boolean;
-  energyClass?: string;
-  lat: number;
-  lng: number;
-  listedAt: string; // ISO date
 }
 
-export interface BarzelScore {
-  district: string;
-  overall: number;          // 0-100
-  pricing: number;          // 0-100
-  liquidity: number;        // 0-100
-  yield: number;            // 0-100
-  risk: number;             // 0-100
-  trend: number;            // 0-100
+export interface CompareResponse {
+  data: CompareItem[];
+}
+
+export interface BarzelPillar {
+  liquidity: number;   // 0-25
+  yield: number;       // 0-25
+  risk: number;        // 0-25
+  trend: number;       // 0-25
+  total: number;       // 0-100
   label: 'Strong Buy' | 'Buy' | 'Neutral' | 'Sell' | 'Strong Sell';
 }
 
-export interface SnapshotKPIs {
+export interface BarzelDistrictScore extends BarzelPillar {
   district: string;
-  medianPrice: number;
-  medianPricePerSqm: number;
-  avgDaysOnMarket: number;
-  activeListings: number;
-  priceChange3m: number;    // percentage
-  priceChange12m: number;   // percentage
-  absorptionRate: number;   // listings sold per month / active listings
-  stockMonths: number;      // months of inventory
-  grossYield: number;       // percentage
-  netYield: number;         // percentage
-  barzelScore: BarzelScore;
-  priceHistory: { date: string; median: number }[];
+  n_listings: number;
+  median_price_sqm: number;
+  median_net_yield: number;
+  median_dom: number;
+  price_trend_6m: number;
+  price_consistency_cv: number;
 }
+
+export interface ScoreResponse {
+  aggregate: BarzelPillar & { districts: string[] };
+  by_district: BarzelDistrictScore[];
+}
+
+export interface TypologyItem {
+  bedrooms: number;
+  count: number;
+  share: number;
+  median_price_sqm: number;
+  median_price: number;
+  median_yield: number;
+  median_dom: number;
+}
+
+export interface TypologyResponse {
+  data: TypologyItem[];
+}
+
+export interface TimeseriesPoint {
+  period: string;
+  district: string;
+  median_price_sqm: number;
+  n_listings: number;
+}
+
+export interface TimeseriesResponse {
+  data: TimeseriesPoint[];
+}
+
+export interface YieldBucket {
+  bucket: string;
+  count: number;
+  share: number;
+}
+
+export interface YieldDistributionResponse {
+  data: YieldBucket[];
+}
+
+export interface DomBucket {
+  bucket: string;
+  count: number;
+  share: number;
+  cumulative_pct: number;
+}
+
+export interface DomDistributionResponse {
+  data: DomBucket[];
+}
+
+// ─── Predict ────────────────────────────────────────────────────────────────
 
 export interface PredictInput {
   district: string;
-  surface: number;
-  rooms: number;
-  floor: number;
-  hasParking: boolean;
-  hasBalcony: boolean;
-  yearBuilt: number;
-  propertyType: 'apartment' | 'house' | 'commercial';
-  energyClass?: string;
+  property_type: string;
+  bedrooms: number;
+  bathrooms: number;
+  size_sqm: number;
+  floor_percentile: number;
+  view_quality: number;
+  renovation_status: string;
+  age_years: number;
+  parking_spaces: number;
+  has_balcony: boolean;
+  has_maids_room: boolean;
+  furnishing: string;
+  dist_to_metro_m: number;
+  dist_to_mall_m: number;
+  dist_to_beach_m: number;
+  service_charge_aed_per_sqm_year: number;
+  month_listed: number;
+  year_listed: number;
+}
+
+export interface FeatureImportanceItem {
+  feature: string;
+  importance: number;
 }
 
 export interface PredictOutput {
-  estimatedPrice: number;
-  estimatedPricePerSqm: number;
-  confidenceInterval: [number, number];
-  comparables: Listing[];
-  featureImportance: { feature: string; importance: number }[];
+  predicted_price_per_sqm: number;
+  predicted_total_price: number;
+  predicted_gross_yield_pct: number;
+  predicted_days_on_market: number;
+  confidence: {
+    price_r2: number;
+    price_mae_aed_sqm: number;
+    yield_r2: number;
+    yield_mae_pct: number;
+    dom_r2: number;
+    dom_mae_days: number;
+  };
+  feature_importance: {
+    price: FeatureImportanceItem[];
+    yield: FeatureImportanceItem[];
+    dom: FeatureImportanceItem[];
+  };
 }
 
-export interface CompareData {
-  districts: string[];
-  metrics: {
-    name: string;
-    key: string;
-    values: Record<string, number>;
-    unit: string;
-  }[];
-}
+// ─── Ask ────────────────────────────────────────────────────────────────────
 
 export interface AskRequest {
   question: string;

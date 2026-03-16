@@ -204,6 +204,35 @@ def get_yield_distribution(districts: list[str]) -> list[dict]:
     return results
 
 
+def get_map_listings(districts: list[str], sample_max: int = 2000) -> list[dict]:
+    """Return a sample of listings with lat/lng + key fields for the map view."""
+    sub = _filter(districts)
+    if len(sub) > sample_max:
+        sub = sub.sample(n=sample_max, random_state=42)
+    cols = [
+        "id", "district", "property_type", "bedrooms", "size_sqm",
+        "sale_price_aed", "price_per_sqm_aed", "gross_yield_pct",
+        "days_on_market", "latitude", "longitude",
+    ]
+    sub = sub[cols].dropna(subset=["latitude", "longitude"])
+    results = []
+    for _, row in sub.iterrows():
+        results.append({
+            "id":               str(row["id"]),
+            "district":         row["district"],
+            "property_type":    row["property_type"],
+            "bedrooms":         int(row["bedrooms"]),
+            "size_sqm":         _safe(row["size_sqm"]),
+            "sale_price_aed":   _safe(row["sale_price_aed"]),
+            "price_per_sqm":    _safe(row["price_per_sqm_aed"]),
+            "gross_yield_pct":  _pct(row["gross_yield_pct"]),
+            "days_on_market":   _safe(row["days_on_market"]),
+            "lat":              _safe(row["latitude"]),
+            "lng":              _safe(row["longitude"]),
+        })
+    return results
+
+
 def get_dom_distribution(districts: list[str]) -> list[dict]:
     """Histogram of days_on_market in 15-day buckets with cumulative %."""
     sub   = _filter(districts)

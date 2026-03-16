@@ -23,6 +23,7 @@ from services.kpi_engine import (
     get_price_timeseries,
     get_yield_distribution,
     get_dom_distribution,
+    get_map_listings,
     ALL_DISTRICTS,
 )
 from services.barzel_score import (
@@ -163,3 +164,18 @@ async def dom_distribution(
     """
     d = _parse_districts(districts)
     return {"data": get_dom_distribution(d)}
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/map-listings
+# ─────────────────────────────────────────────
+@router.get("/map-listings")
+async def map_listings(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """
+    Sample of listings with lat/lng + key fields for the map view.
+    Returns at most 2000 listings.
+    """
+    d = _parse_districts(districts)
+    return {"data": get_map_listings(d)}

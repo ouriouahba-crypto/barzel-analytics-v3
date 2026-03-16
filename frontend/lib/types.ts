@@ -98,6 +98,26 @@ export interface DomDistributionResponse {
   data: DomBucket[];
 }
 
+// ─── Map ─────────────────────────────────────────────────────────────────────
+
+export interface MapListing {
+  id: string;
+  district: string;
+  property_type: string;
+  bedrooms: number;
+  size_sqm: number;
+  sale_price_aed: number;
+  price_per_sqm: number;
+  gross_yield_pct: number;
+  days_on_market: number;
+  lat: number;
+  lng: number;
+}
+
+export interface MapListingsResponse {
+  data: MapListing[];
+}
+
 // ─── Predict ────────────────────────────────────────────────────────────────
 
 export interface PredictInput {

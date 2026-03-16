@@ -6,6 +6,7 @@ import {
   TimeseriesResponse,
   YieldDistributionResponse,
   DomDistributionResponse,
+  MapListingsResponse,
   PredictInput,
   PredictOutput,
   AskRequest,
@@ -65,6 +66,11 @@ export async function getYieldDistribution(districts: string[]): Promise<YieldDi
 export async function getDomDistribution(districts: string[]): Promise<DomDistributionResponse> {
   const q = districts.length ? `?${districtsParam(districts)}` : '';
   return fetchApi<DomDistributionResponse>(`/api/analytics/dom-distribution${q}`);
+}
+
+export async function getMapListings(districts: string[]): Promise<MapListingsResponse> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<MapListingsResponse>(`/api/analytics/map-listings${q}`);
 }
 
 // ─── Predict ─────────────────────────────────────────────────────────────────

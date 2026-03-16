@@ -19,7 +19,8 @@ class LLMService:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             raise ValueError("ANTHROPIC_API_KEY not found in environment")
-        self.client = Anthropic(api_key=api_key)
+        import httpx
+        self.client = Anthropic(api_key=api_key, http_client=httpx.Client())
         self.model = "claude-sonnet-4-20250514"
 
     def _build_context(self, districts: list[str]) -> str:

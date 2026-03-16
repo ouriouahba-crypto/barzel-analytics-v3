@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -8,11 +9,14 @@ from routers import analytics, predict, ask, pdf
 
 app = FastAPI(title="Barzel Analytics V3", version="3.0.0")
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001",
+        FRONTEND_URL,
     ],
     allow_credentials=True,
     allow_methods=["*"],

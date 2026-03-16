@@ -35,8 +35,16 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-56 flex flex-col border-r"
-      style={{ background: '#0D0D0D', borderColor: '#2E2E42' }}>
+    <aside style={{
+      width: '220px',
+      minWidth: '220px',
+      height: '100vh',
+      background: '#0D0D0D',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      borderRight: '1px solid #2E2E42',
+    }}>
       {/* Logo */}
       <div className="px-4 py-5 border-b" style={{ borderColor: '#2E2E42' }}>
         <div className="flex items-center gap-2">

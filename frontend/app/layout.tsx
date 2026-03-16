@@ -15,15 +15,32 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>
-        <Sidebar />
-        <TopBar />
-        <main
-          className="ml-56 pt-14 min-h-screen"
-          style={{ background: '#0D0D0D' }}
-        >
-          {children}
-        </main>
+      <body style={{ margin: 0, padding: 0, background: '#0D0D0D' }}>
+        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+
+          {/* Sidebar fixe à gauche */}
+          <Sidebar />
+
+          {/* Colonne droite : TopBar + contenu scrollable */}
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            minWidth: 0,
+          }}>
+            <TopBar />
+
+            <main style={{
+              flex: 1,
+              overflow: 'auto',
+              background: '#0D0D0D',
+            }}>
+              {children}
+            </main>
+          </div>
+
+        </div>
       </body>
     </html>
   );

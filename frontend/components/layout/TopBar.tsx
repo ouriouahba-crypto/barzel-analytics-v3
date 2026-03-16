@@ -37,10 +37,18 @@ export function TopBar() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <header
-      className="fixed top-0 left-56 right-0 h-14 flex items-center gap-4 px-5 border-b z-10"
-      style={{ background: '#1A1A2E', borderColor: '#2E2E42' }}
-    >
+    <header style={{
+      height: '56px',
+      minHeight: '56px',
+      width: '100%',
+      background: '#1A1A2E',
+      borderBottom: '1px solid #2E2E42',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 20px',
+      gap: '16px',
+      overflow: 'hidden',
+    }}>
       {/* Label */}
       <span className="text-xs font-medium shrink-0" style={{ color: '#9A9AAA' }}>
         Markets:

@@ -118,6 +118,34 @@ export interface MapListingsResponse {
   data: MapListing[];
 }
 
+// ─── Pricing ─────────────────────────────────────────────────────────────────
+
+export interface PriceBucket {
+  district: string;
+  bucket: string;
+  bucket_start: number;
+  count: number;
+  share: number;
+}
+
+export interface PriceDistributionResponse {
+  data: PriceBucket[];
+}
+
+export interface PriceScatterPoint {
+  district: string;
+  size_sqm: number;
+  price_per_sqm_aed: number;
+  sale_price_aed: number;
+  bedrooms: number;
+  property_type: string;
+  gross_yield_pct: number;
+}
+
+export interface PriceScatterResponse {
+  data: PriceScatterPoint[];
+}
+
 // ─── Predict ────────────────────────────────────────────────────────────────
 
 export interface PredictInput {

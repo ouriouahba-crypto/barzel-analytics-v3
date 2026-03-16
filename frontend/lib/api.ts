@@ -7,6 +7,8 @@ import {
   YieldDistributionResponse,
   DomDistributionResponse,
   MapListingsResponse,
+  PriceDistributionResponse,
+  PriceScatterResponse,
   PredictInput,
   PredictOutput,
   AskRequest,
@@ -71,6 +73,16 @@ export async function getDomDistribution(districts: string[]): Promise<DomDistri
 export async function getMapListings(districts: string[]): Promise<MapListingsResponse> {
   const q = districts.length ? `?${districtsParam(districts)}` : '';
   return fetchApi<MapListingsResponse>(`/api/analytics/map-listings${q}`);
+}
+
+export async function getPriceDistribution(districts: string[]): Promise<PriceDistributionResponse> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<PriceDistributionResponse>(`/api/analytics/price-distribution${q}`);
+}
+
+export async function getPriceScatter(districts: string[]): Promise<PriceScatterResponse> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<PriceScatterResponse>(`/api/analytics/price-scatter${q}`);
 }
 
 // ─── Predict ─────────────────────────────────────────────────────────────────

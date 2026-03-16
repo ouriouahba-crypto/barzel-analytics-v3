@@ -255,3 +255,39 @@ def get_dom_distribution(districts: list[str]) -> list[dict]:
             "cumulative_pct": _pct(cumulative / total * 100) if total else 0,
         })
     return results
+
+
+def get_price_distribution(districts: list[str]) -> list[dict]:
+    """Histogram of price_per_sqm_aed in 2000 AED buckets, by district."""
+    sub = _filter(districts)
+    targets = districts if districts else ALL_DISTRICTS
+    results = []
+    for d in targets:
+        d_sub = sub[sub["district"] == d]["price_per_sqm_aed"].dropna()
+        total = len(d_sub)
+        buckets: dict[int, int] = {}
+        for p in d_sub:
+            lo = int(p // 2000) * 2000
+            buckets[lo] = buckets.get(lo, 0) + 1
+        for lo in sorted(buckets.keys()):
+            count = buckets[lo]
+            results.append({
+                "district": d,
+                "bucket": f"{lo // 1000}k-{(lo + 2000) // 1000}k",
+                "bucket_start": lo,
+                "count": count,
+                "share": _pct(count / total * 100) if total else 0,
+            })
+    return results
+
+
+def get_price_scatter(districts: list[str], sample_max: int = 1500) -> list[dict]:
+    """Scatter plot data: size_sqm vs price_per_sqm_aed, colored by district."""
+    sub = _filter(districts)
+    cols = ["district", "size_sqm", "price_per_sqm_aed", "sale_price_aed",
+            "bedrooms", "property_type", "gross_yield_pct"]
+    existing = [c for c in cols if c in sub.columns]
+    out = sub[existing].dropna(subset=["size_sqm", "price_per_sqm_aed"])
+    if len(out) > sample_max:
+        out = out.sample(sample_max, random_state=42)
+    return out.to_dict(orient="records")

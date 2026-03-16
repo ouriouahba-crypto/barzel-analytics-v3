@@ -24,6 +24,8 @@ from services.kpi_engine import (
     get_yield_distribution,
     get_dom_distribution,
     get_map_listings,
+    get_price_distribution,
+    get_price_scatter,
     ALL_DISTRICTS,
 )
 from services.barzel_score import (
@@ -179,3 +181,27 @@ async def map_listings(
     """
     d = _parse_districts(districts)
     return {"data": get_map_listings(d)}
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/price-distribution
+# ─────────────────────────────────────────────
+@router.get("/price-distribution")
+async def price_distribution(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """Price per sqm histogram by district."""
+    d = _parse_districts(districts)
+    return {"data": get_price_distribution(d)}
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/price-scatter
+# ─────────────────────────────────────────────
+@router.get("/price-scatter")
+async def price_scatter(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """Scatter data: size vs price per sqm."""
+    d = _parse_districts(districts)
+    return {"data": get_price_scatter(d)}

@@ -18,6 +18,26 @@ const SUGGESTIONS = [
   "Analyse les risques de Palm Jumeirah",
 ];
 
+function renderMarkdown(text: string) {
+  return text.split('\n').map((line, i) => {
+    // Remove ## headers → bold text
+    let processed = line.replace(/^#{1,3}\s+/, '');
+    // Bold **text**
+    processed = processed.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+    // Bullet points
+    if (processed.startsWith('- ')) {
+      processed = '• ' + processed.slice(2);
+    }
+    // Empty line = spacer
+    if (processed.trim() === '') {
+      return <div key={i} style={{ height: 8 }} />;
+    }
+    return (
+      <p key={i} style={{ margin: 0, marginBottom: 6 }} dangerouslySetInnerHTML={{ __html: processed }} />
+    );
+  });
+}
+
 function formatTime(d: Date) {
   return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 }
@@ -160,13 +180,7 @@ export default function AiAnalystPage() {
                         fontFamily: 'Inter, sans-serif',
                         boxShadow: '0 1px 3px rgba(10,22,40,0.06)',
                       }}>
-                        {msg.content.split('\n').map((line, li) =>
-                          line.trim() === '' ? (
-                            <div key={li} style={{ height: 4 }} />
-                          ) : (
-                            <p key={li} style={{ margin: 0, marginBottom: 8 }}>{line}</p>
-                          )
-                        )}
+                        {renderMarkdown(msg.content)}
                       </div>
                       <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: '#7A90A8', marginTop: 4 }}>
                         {formatTime(msg.timestamp)}

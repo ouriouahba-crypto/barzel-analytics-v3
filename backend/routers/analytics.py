@@ -231,3 +231,16 @@ async def data_quality(
     """Data completeness analysis."""
     d = _parse_districts(districts)
     return get_data_quality(d)
+
+
+# ─────────────────────────────────────────────
+# GET /api/analytics/insights
+# ─────────────────────────────────────────────
+@router.get("/insights")
+async def insights(
+    districts: Optional[str] = Query(None, description="Comma-separated district names"),
+):
+    """Dynamic text insights for all dashboard pages."""
+    d = _parse_districts(districts)
+    from services.insights_engine import get_all_insights
+    return get_all_insights(d)

@@ -130,3 +130,8 @@ export async function generatePdf(districts: string[], language: 'en' | 'fr'): P
 export async function checkHealth(): Promise<{ status: string }> {
   return fetchApi<{ status: string }>('/api/health');
 }
+
+export async function getInsights(districts: string[]): Promise<Record<string, any>> {
+  const q = districts.length ? `?${districtsParam(districts)}` : '';
+  return fetchApi<Record<string, any>>(`/api/analytics/insights${q}`);
+}

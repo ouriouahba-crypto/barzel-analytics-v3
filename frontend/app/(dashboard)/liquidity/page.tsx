@@ -147,7 +147,7 @@ export default function LiquidityPage() {
         Liquidity Analysis
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Vitesse d'absorption et temps de vente · districts sélectionnés
+        {language === 'fr' ? "Vitesse d'absorption et temps de vente · districts sélectionnés" : 'Absorption speed and selling time · selected districts'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -162,10 +162,10 @@ export default function LiquidityPage() {
           {/* ── Section 1 : KPI cards ──────────────────────────────────────── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
             {[
-              { label: 'DOM MÉDIAN',       value: `${Math.round(avgDom)}d`,                    topColor: '#1E5FA8' },
-              { label: 'FAST-SALE ≤60J',   value: `${avgFast60.toFixed(1)}%`,                  topColor: '#1A7A4A' },
-              { label: 'FAST-SALE ≤30J',   value: `${avgFast30.toFixed(1)}%`,                  topColor: '#C9A84C' },
-              { label: 'ANNONCES ACTIVES', value: totalN.toLocaleString('en-US'),              topColor: '#6B3FA0' },
+              { label: language === 'fr' ? 'DOM MÉDIAN' : 'MEDIAN DOM',             value: `${Math.round(avgDom)}d`,               topColor: '#1E5FA8' },
+              { label: language === 'fr' ? 'FAST-SALE ≤60J' : 'FAST-SALE ≤60D', value: `${avgFast60.toFixed(1)}%`,             topColor: '#1A7A4A' },
+              { label: language === 'fr' ? 'FAST-SALE ≤30J' : 'FAST-SALE ≤30D', value: `${avgFast30.toFixed(1)}%`,             topColor: '#C9A84C' },
+              { label: language === 'fr' ? 'ANNONCES ACTIVES' : 'ACTIVE LISTINGS', value: totalN.toLocaleString('en-US'),      topColor: '#6B3FA0' },
             ].map(({ label, value, topColor }) => (
               <div key={label} style={{
                 background: '#FFFFFF',
@@ -193,14 +193,14 @@ export default function LiquidityPage() {
           {/* ── Section 2 : DOM Distribution ──────────────────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
             <CardHeader
-              title="Distribution des jours sur le marché"
-              subtitle="Tranches de 15 jours · courbe = % cumulé"
+              title={language === 'fr' ? 'Distribution des jours sur le marché' : 'Days on market distribution'}
+              subtitle={language === 'fr' ? 'Tranches de 15 jours · courbe = % cumulé' : '15-day brackets · curve = cumulative %'}
             />
             <ResponsiveContainer width="100%" height={320}>
               <ComposedChart data={domData} margin={{ top: 4, right: 48, bottom: 4, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
                 <XAxis dataKey="bucket" tick={{ fontSize: 10, fill: '#7A90A8' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#7A90A8' }} label={{ value: 'Annonces', angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: '#7A90A8' } }} />
+                <YAxis tick={{ fontSize: 11, fill: '#7A90A8' }} label={{ value: language === 'fr' ? 'Annonces' : 'Listings', angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: '#7A90A8' } }} />
                 <YAxis
                   yAxisId="right"
                   orientation="right"
@@ -212,14 +212,14 @@ export default function LiquidityPage() {
                   contentStyle={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', fontSize: '12px' }}
                 />
                 <Legend wrapperStyle={{ fontSize: '11px' }} />
-                <Bar dataKey="count" fill="#1E5FA8" barSize={28} radius={[3, 3, 0, 0]} name="Nb annonces" />
+                <Bar dataKey="count" fill="#1E5FA8" barSize={28} radius={[3, 3, 0, 0]} name={language === 'fr' ? 'Nb annonces' : 'Listings'} />
                 <Line
                   dataKey="cumulative_pct"
                   stroke="#C9A84C"
                   strokeWidth={2}
                   dot={false}
                   yAxisId="right"
-                  name="% cumulé"
+                  name={language === 'fr' ? '% cumulé' : 'Cumulative %'}
                   type="monotone"
                 />
               </ComposedChart>
@@ -237,7 +237,7 @@ export default function LiquidityPage() {
 
             {/* Ranking */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Classement liquidité" subtitle="Districts classés par fast-sale ≤60j" />
+              <CardHeader title={language === 'fr' ? 'Classement liquidité' : 'Liquidity ranking'} subtitle={language === 'fr' ? 'Districts classés par fast-sale ≤60j' : 'Districts ranked by fast-sale ≤60d'} />
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {ranked.map((item, idx) => (
                   <div key={item.district}>
@@ -276,7 +276,7 @@ export default function LiquidityPage() {
 
             {/* DOM horizontal bar chart */}
             <div style={CARD_STYLE}>
-              <CardHeader title="DOM par district" subtitle="Jours médians sur le marché" />
+              <CardHeader title={language === 'fr' ? 'DOM par district' : 'DOM by district'} subtitle={language === 'fr' ? 'Jours médians sur le marché' : 'Median days on market'} />
               <ResponsiveContainer width="100%" height={Math.max(40 * domRanked.length + 40, 200)}>
                 <BarChart data={domRanked} layout="vertical" margin={{ top: 4, right: 24, bottom: 4, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />

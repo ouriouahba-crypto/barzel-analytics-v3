@@ -141,7 +141,7 @@ export default function CostsPage() {
         Cost Analysis
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Service charges et impact sur le rendement · districts sélectionnés
+        {language === 'fr' ? 'Service charges et impact sur le rendement · districts sélectionnés' : 'Service charges and yield impact · selected districts'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -156,10 +156,10 @@ export default function CostsPage() {
           {/* ── Section 1 : KPI cards ──────────────────────────────────────── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
             {[
-              { label: 'SERVICE CHARGE MÉDIAN', value: `${Math.round(avgSC)} AED/sqm/yr`, topColor: '#1E5FA8' },
-              { label: 'YIELD BRUT MÉDIAN',     value: `${avgGross.toFixed(1)}%`,          topColor: '#1A7A4A' },
-              { label: 'YIELD NET MÉDIAN',      value: `${avgNet.toFixed(1)}%`,            topColor: '#C9A84C' },
-              { label: 'IMPACT CHARGES',        value: `${impact.toFixed(1)} pts`,         topColor: '#C0392B' },
+              { label: language === 'fr' ? 'SERVICE CHARGE MÉDIAN' : 'MEDIAN SERVICE CHARGE', value: `${Math.round(avgSC)} AED/sqm/yr`, topColor: '#1E5FA8' },
+              { label: language === 'fr' ? 'YIELD BRUT MÉDIAN' : 'MEDIAN GROSS YIELD',     value: `${avgGross.toFixed(1)}%`,          topColor: '#1A7A4A' },
+              { label: language === 'fr' ? 'YIELD NET MÉDIAN' : 'MEDIAN NET YIELD',        value: `${avgNet.toFixed(1)}%`,            topColor: '#C9A84C' },
+              { label: language === 'fr' ? 'IMPACT CHARGES' : 'CHARGE IMPACT',             value: `${impact.toFixed(1)} pts`,         topColor: '#C0392B' },
             ].map(({ label, value, topColor }) => (
               <div key={label} style={{
                 background: '#FFFFFF',
@@ -186,7 +186,7 @@ export default function CostsPage() {
 
           {/* ── Section 2 : Service charges par district ──────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
-            <CardHeader title="Service charges par district" subtitle="Médiane AED/sqm/an" />
+            <CardHeader title={language === 'fr' ? 'Service charges par district' : 'Service charges by district'} subtitle={language === 'fr' ? 'Médiane AED/sqm/an' : 'Median AED/sqm/year'} />
             <ResponsiveContainer width="100%" height={Math.max(40 * scSorted.length + 40, 200)}>
               <BarChart data={scSorted} layout="vertical" margin={{ top: 4, right: 32, bottom: 4, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -216,7 +216,7 @@ export default function CostsPage() {
 
             {/* Scatter charges vs yield */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Charges vs Rendement" subtitle="Service charge vs yield net par district" />
+              <CardHeader title={language === 'fr' ? 'Charges vs Rendement' : 'Charges vs Yield'} subtitle={language === 'fr' ? 'Service charge vs yield net par district' : 'Service charge vs net yield by district'} />
               <ResponsiveContainer width="100%" height={300}>
                 <ScatterChart margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -259,12 +259,12 @@ export default function CostsPage() {
 
             {/* Detail table */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Détail par district" subtitle="Spread brut → net" />
+              <CardHeader title={language === 'fr' ? 'Détail par district' : 'Detail by district'} subtitle={language === 'fr' ? 'Spread brut → net' : 'Gross → net spread'} />
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
                   <thead>
                     <tr style={{ background: '#0A1628' }}>
-                      {['District', 'Brut', 'Net', 'Spread', 'Charges'].map((h) => (
+                      {(['District', language === 'fr' ? 'Brut' : 'Gross', 'Net', 'Spread', 'Charges'] as string[]).map((h) => (
                         <th key={h} style={{ padding: '8px 10px', textAlign: h === 'District' ? 'left' : 'center', color: '#FFFFFF', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>
                           {h}
                         </th>

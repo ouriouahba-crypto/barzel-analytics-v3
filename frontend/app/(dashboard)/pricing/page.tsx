@@ -187,7 +187,7 @@ export default function PricingPage() {
         Pricing Lab
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Analyse des prix · districts sélectionnés
+        {language === 'fr' ? 'Analyse des prix · districts sélectionnés' : 'Price analysis · selected districts'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -202,7 +202,7 @@ export default function PricingPage() {
         <>
           {/* ── Section 1 : Timeseries ─────────────────────────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
-            <CardHeader title="Évolution du prix médian" subtitle="Médiane mensuelle AED/sqm par district" />
+            <CardHeader title={language === 'fr' ? 'Évolution du prix médian' : 'Median price evolution'} subtitle={language === 'fr' ? 'Médiane mensuelle AED/sqm par district' : 'Monthly median AED/sqm by district'} />
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={timeseriesData} margin={{ top: 4, right: 16, bottom: 4, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -239,7 +239,7 @@ export default function PricingPage() {
 
             {/* Distribution */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Distribution des prix" subtitle="Prix par sqm — tranches de 2 000 AED" />
+              <CardHeader title={language === 'fr' ? 'Distribution des prix' : 'Price distribution'} subtitle={language === 'fr' ? 'Prix par sqm — tranches de 2 000 AED' : 'Price per sqm — 2,000 AED brackets'} />
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={distData} margin={{ top: 4, right: 8, bottom: 56, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -256,7 +256,7 @@ export default function PricingPage() {
 
             {/* Scatter */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Prix vs Surface" subtitle="Prix/sqm en fonction de la surface" />
+              <CardHeader title={language === 'fr' ? 'Prix vs Surface' : 'Price vs Size'} subtitle={language === 'fr' ? 'Prix/sqm en fonction de la surface' : 'Price/sqm by property size'} />
               <ResponsiveContainer width="100%" height={300}>
                 <ScatterChart margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -313,19 +313,19 @@ export default function PricingPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
             {[
               {
-                label: 'Prix médian/sqm',
+                label: language === 'fr' ? 'PRIX MÉDIAN/SQM' : 'MEDIAN PRICE/SQM',
                 value: medPpsqm ? `${(medPpsqm / 1000).toFixed(1)}k AED` : '—',
               },
               {
-                label: 'Prix médian total',
+                label: language === 'fr' ? 'PRIX MÉDIAN TOTAL' : 'MEDIAN TOTAL PRICE',
                 value: medTotal ? `${(medTotal / 1_000_000).toFixed(2)}M AED` : '—',
               },
               {
-                label: 'Surface médiane',
+                label: language === 'fr' ? 'SURFACE MÉDIANE' : 'MEDIAN SIZE',
                 value: medSqm ? `${Math.round(medSqm)} sqm` : '—',
               },
               {
-                label: 'Fourchette P25–P75',
+                label: language === 'fr' ? 'FOURCHETTE P25–P75' : 'P25–P75 RANGE',
                 value: p25 && p75 ? `${(p25 / 1000).toFixed(0)}k–${(p75 / 1000).toFixed(0)}k AED` : '—',
               },
             ].map(({ label, value }) => (

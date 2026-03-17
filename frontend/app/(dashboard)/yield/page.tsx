@@ -145,7 +145,7 @@ export default function YieldPage() {
         Yield Analysis
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Rendement locatif et distribution · districts sélectionnés
+        {language === 'fr' ? 'Rendement locatif et distribution · districts sélectionnés' : 'Rental yield and distribution · selected districts'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -160,10 +160,10 @@ export default function YieldPage() {
           {/* ── Section 1 : KPI cards ──────────────────────────────────────── */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
             {[
-              { label: 'YIELD BRUT MÉDIAN', value: `${avgGross.toFixed(1)}%`,   topColor: '#1A7A4A' },
-              { label: 'YIELD NET MÉDIAN',  value: `${avgNet.toFixed(1)}%`,     topColor: '#1E5FA8' },
-              { label: 'VACANCY ESTIMÉE',   value: `${Math.round(avgVacancy)}d`, topColor: '#C9A84C' },
-              { label: 'SPREAD BRUT-NET',   value: `${spread.toFixed(1)} pts`,  topColor: '#6B3FA0' },
+              { label: language === 'fr' ? 'YIELD BRUT MÉDIAN' : 'MEDIAN GROSS YIELD', value: `${avgGross.toFixed(1)}%`,        topColor: '#1A7A4A' },
+              { label: language === 'fr' ? 'YIELD NET MÉDIAN' : 'MEDIAN NET YIELD',   value: `${avgNet.toFixed(1)}%`,          topColor: '#1E5FA8' },
+              { label: language === 'fr' ? 'VACANCY ESTIMÉE' : 'EST. VACANCY',        value: `${Math.round(avgVacancy)}d`,     topColor: '#C9A84C' },
+              { label: language === 'fr' ? 'SPREAD BRUT-NET' : 'GROSS-NET SPREAD',    value: `${spread.toFixed(1)} pts`,       topColor: '#6B3FA0' },
             ].map(({ label, value, topColor }) => (
               <div key={label} style={{
                 background: '#FFFFFF',
@@ -190,14 +190,14 @@ export default function YieldPage() {
 
           {/* ── Section 2 : Yield distribution ────────────────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
-            <CardHeader title="Distribution du rendement brut" subtitle="Tranches de 0.5% — gross yield" />
+            <CardHeader title={language === 'fr' ? 'Distribution du rendement brut' : 'Gross yield distribution'} subtitle={language === 'fr' ? 'Tranches de 0.5% — gross yield' : '0.5% brackets — gross yield'} />
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={yieldData} margin={{ top: 4, right: 16, bottom: 56, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
                 <XAxis dataKey="bucket" tick={{ fontSize: 10, fill: '#7A90A8' }} angle={-45} textAnchor="end" height={60} />
                 <YAxis tick={{ fontSize: 11, fill: '#7A90A8' }} />
                 <Tooltip contentStyle={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', fontSize: '12px' }} />
-                <Bar dataKey="count" fill="#1A7A4A" barSize={24} radius={[3, 3, 0, 0]} name="Annonces" />
+                <Bar dataKey="count" fill="#1A7A4A" barSize={24} radius={[3, 3, 0, 0]} name={language === 'fr' ? 'Annonces' : 'Listings'} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -213,7 +213,7 @@ export default function YieldPage() {
 
             {/* Scatter yield vs price */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Yield vs Prix" subtitle="Rendement brut en fonction du prix/sqm" />
+              <CardHeader title={language === 'fr' ? 'Yield vs Prix' : 'Yield vs Price'} subtitle={language === 'fr' ? 'Rendement brut en fonction du prix/sqm' : 'Gross yield by price/sqm'} />
               <ResponsiveContainer width="100%" height={300}>
                 <ScatterChart margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -261,7 +261,7 @@ export default function YieldPage() {
 
             {/* Yield net ranking — horizontal bars */}
             <div style={CARD_STYLE}>
-              <CardHeader title="Yield net par district" subtitle="Classement par rendement net médian" />
+              <CardHeader title={language === 'fr' ? 'Yield net par district' : 'Net yield by district'} subtitle={language === 'fr' ? 'Classement par rendement net médian' : 'Ranked by median net yield'} />
               <ResponsiveContainer width="100%" height={Math.max(45 * netRanked.length + 40, 200)}>
                 <BarChart data={netRanked} layout="vertical" margin={{ top: 4, right: 32, bottom: 4, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />

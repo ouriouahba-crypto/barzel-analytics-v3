@@ -11,12 +11,6 @@ interface Message {
   timestamp: Date;
 }
 
-const SUGGESTIONS = [
-  "Quel est le meilleur district pour investir ?",
-  "Compare le yield de JVC vs Dubai Marina",
-  "Quel district a la meilleure liquidité ?",
-  "Analyse les risques de Palm Jumeirah",
-];
 
 function renderMarkdown(text: string) {
   return text.split('\n').map((line, i) => {
@@ -44,6 +38,13 @@ function formatTime(d: Date) {
 
 export default function AiAnalystPage() {
   const { selectedDistricts, language } = useAppStore();
+
+  const suggestions = [
+    language === 'fr' ? 'Quel est le meilleur district pour investir ?' : 'Which is the best district to invest in?',
+    language === 'fr' ? 'Compare le yield de JVC vs Dubai Marina' : 'Compare yield of JVC vs Dubai Marina',
+    language === 'fr' ? 'Quel district a la meilleure liquidité ?' : 'Which district has the best liquidity?',
+    language === 'fr' ? 'Analyse les risques de Palm Jumeirah' : 'Analyze the risks of Palm Jumeirah',
+  ];
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -78,7 +79,7 @@ export default function AiAnalystPage() {
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Désolé, une erreur s'est produite. Vérifiez que le backend est démarré et que la clé API est configurée.",
+        content: language === 'fr' ? "Désolé, une erreur s'est produite. Vérifiez que le backend est démarré." : 'Sorry, an error occurred. Please check that the backend is running.',
         timestamp: new Date(),
       }]);
     } finally {
@@ -104,7 +105,7 @@ export default function AiAnalystPage() {
           AI Analyst
         </div>
         <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7A90A8', marginTop: 4 }}>
-          Posez vos questions sur le marché Dubai
+          {language === 'fr' ? 'Posez vos questions sur le marché Dubai' : 'Ask questions about the Dubai market'}
         </div>
         <div style={{ width: 40, height: 2, background: '#C9A84C', marginTop: 8 }} />
       </div>
@@ -121,13 +122,13 @@ export default function AiAnalystPage() {
               <span style={{ fontFamily: '"Playfair Display", serif', fontSize: 28, color: '#C9A84C' }}>?</span>
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 16, fontWeight: 600, color: '#0A1628', marginTop: 16 }}>
-              Que voulez-vous savoir sur le marché ?
+              {language === 'fr' ? 'Que voulez-vous savoir sur le marché ?' : 'What do you want to know about the market?'}
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7A90A8', marginTop: 4 }}>
-              L'analyste IA a accès aux données de tous les districts sélectionnés
+              {language === 'fr' ? "L'analyste IA a accès aux données de tous les districts sélectionnés" : 'The AI analyst has access to data from all selected districts'}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 24, width: '100%', maxWidth: 520 }}>
-              {SUGGESTIONS.map(s => (
+              {suggestions.map(s => (
                 <button
                   key={s}
                   className="suggestion-btn"
@@ -230,7 +231,7 @@ export default function AiAnalystPage() {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) handleSend(); }}
-          placeholder="Posez une question sur le marché Dubai..."
+          placeholder={language === 'fr' ? 'Posez une question sur le marché Dubai...' : 'Ask a question about the Dubai market...'}
           style={{
             flex: 1, padding: '12px 16px', border: '1px solid #D8E2EE',
             borderRadius: 8, fontSize: 14, fontFamily: 'Inter, sans-serif',

@@ -70,7 +70,7 @@ export default function PdfMemoPage() {
         PDF Memo Builder
       </div>
       <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, color: '#7A90A8', marginTop: 4 }}>
-        Générer un mémo d'investissement professionnel
+        {language === 'fr' ? "Générer un mémo d'investissement professionnel" : 'Generate a professional investment memo'}
       </div>
       <div style={{ width: 40, height: 2, background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -80,16 +80,16 @@ export default function PdfMemoPage() {
         {/* ── Left column: Configuration ── */}
         <div style={{ background: '#FFFFFF', borderRadius: 8, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 600, color: '#0A1628', marginBottom: 16 }}>
-            Configuration du rapport
+            {language === 'fr' ? 'Configuration du rapport' : 'Report configuration'}
           </div>
           <div style={{ height: 1, background: '#EEF1F6', marginBottom: 16 }} />
 
           {/* Districts */}
           <div>
-            <span style={labelStyle}>Districts sélectionnés</span>
+            <span style={labelStyle}>{language === 'fr' ? 'DISTRICTS SÉLECTIONNÉS' : 'SELECTED DISTRICTS'}</span>
             {selectedDistricts.length === 0 ? (
               <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: '#C0392B' }}>
-                Aucun district sélectionné
+                {language === 'fr' ? 'Aucun district sélectionné' : 'No district selected'}
               </div>
             ) : (
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -114,7 +114,7 @@ export default function PdfMemoPage() {
 
           {/* Language */}
           <div style={{ marginTop: 20 }}>
-            <span style={labelStyle}>Langue</span>
+            <span style={labelStyle}>{language === 'fr' ? 'LANGUE' : 'LANGUAGE'}</span>
             <div style={{ display: 'flex', gap: 8 }}>
               {(['fr', 'en'] as const).map(l => (
                 <button
@@ -137,11 +137,11 @@ export default function PdfMemoPage() {
 
           {/* Sections */}
           <div style={{ marginTop: 20 }}>
-            <span style={labelStyle}>Sections du rapport</span>
+            <span style={labelStyle}>{language === 'fr' ? 'SECTIONS DU RAPPORT' : 'REPORT SECTIONS'}</span>
             {[
-              "Vue d'ensemble — KPIs agrégés",
-              'Comparaison des districts — tableau détaillé',
-              'Barzel Scores — scoring par district',
+              language === 'fr' ? "Vue d'ensemble — KPIs agrégés" : 'Overview — Aggregate KPIs',
+              language === 'fr' ? 'Comparaison des districts — tableau détaillé' : 'District comparison — detailed table',
+              language === 'fr' ? 'Barzel Scores — scoring par district' : 'Barzel Scores — scoring by district',
             ].map(item => (
               <div key={item} style={{
                 display: 'flex', gap: 8, alignItems: 'center',
@@ -169,7 +169,7 @@ export default function PdfMemoPage() {
               }}
             >
               <DownloadIcon />
-              {loading ? 'Génération en cours...' : 'Générer le PDF'}
+              {loading ? (language === 'fr' ? 'Génération en cours...' : 'Generating...') : (language === 'fr' ? 'Générer le PDF' : 'Generate PDF')}
             </button>
 
             {success && (
@@ -178,7 +178,7 @@ export default function PdfMemoPage() {
                 padding: 10, fontFamily: 'Inter, sans-serif', fontSize: 12, color: '#1A7A4A',
                 marginTop: 8,
               }}>
-                ✓ PDF généré avec succès — téléchargement lancé
+                {language === 'fr' ? '✓ PDF généré avec succès — téléchargement lancé' : '✓ PDF generated successfully — download started'}
               </div>
             )}
             {error && (
@@ -196,7 +196,7 @@ export default function PdfMemoPage() {
         {/* ── Right column: Preview ── */}
         <div style={{ background: '#FFFFFF', borderRadius: 8, padding: 24, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, fontWeight: 600, color: '#0A1628', marginBottom: 16 }}>
-            Aperçu du mémo
+            {language === 'fr' ? 'Aperçu du mémo' : 'Memo preview'}
           </div>
           <div style={{ height: 1, background: '#EEF1F6', marginBottom: 16 }} />
 
@@ -262,7 +262,7 @@ export default function PdfMemoPage() {
               marginTop: 40, fontFamily: 'Inter, sans-serif', fontSize: 8,
               color: '#7A90A8', fontStyle: 'italic',
             }}>
-              Ce document est généré automatiquement par Barzel Analytics V3. Il ne constitue pas un conseil en investissement.
+              {language === 'fr' ? 'Ce document est généré automatiquement par Barzel Analytics V3. Il ne constitue pas un conseil en investissement.' : 'This document is automatically generated by Barzel Analytics V3. It does not constitute investment advice.'}
             </div>
           </div>
 
@@ -270,7 +270,7 @@ export default function PdfMemoPage() {
             marginTop: 12, fontFamily: 'Inter, sans-serif', fontSize: 11,
             color: '#7A90A8', fontStyle: 'italic', textAlign: 'center',
           }}>
-            Le PDF généré contiendra les données réelles des districts sélectionnés
+            {language === 'fr' ? 'Le PDF généré contiendra les données réelles des districts sélectionnés' : 'The generated PDF will contain real data from selected districts'}
           </div>
         </div>
       </div>

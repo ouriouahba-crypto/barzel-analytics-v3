@@ -60,7 +60,7 @@ function CardHeader({ title, subtitle }: { title: string; subtitle: string }) {
 }
 
 export default function QualityPage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
   const [data, setData]     = useState<DataQualityResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState<string | null>(null);
@@ -100,7 +100,7 @@ export default function QualityPage() {
         Data Quality
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Couverture et complétude des données · districts sélectionnés
+        {language === 'fr' ? 'Couverture et complétude des données · districts sélectionnés' : 'Data coverage and completeness · selected districts'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -119,7 +119,7 @@ export default function QualityPage() {
               borderTop: `3px solid ${globalScoreColor(data.overall_completeness)}`, padding: '16px',
             }}>
               <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7A90A8', marginBottom: '8px' }}>
-                SCORE GLOBAL
+                {language === 'fr' ? 'SCORE GLOBAL' : 'OVERALL SCORE'}
               </div>
               <div style={{ fontSize: '32px', fontWeight: 700, color: globalScoreColor(data.overall_completeness) }}>
                 {data.overall_completeness.toFixed(1)}%
@@ -130,7 +130,7 @@ export default function QualityPage() {
               borderTop: '3px solid #1E5FA8', padding: '16px',
             }}>
               <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7A90A8', marginBottom: '8px' }}>
-                ANNONCES ANALYSÉES
+                {language === 'fr' ? 'ANNONCES ANALYSÉES' : 'LISTINGS ANALYZED'}
               </div>
               <div style={{ fontSize: '28px', fontWeight: 700, color: '#0A1628' }}>
                 {data.n_listings.toLocaleString('en-US')}
@@ -141,17 +141,17 @@ export default function QualityPage() {
               borderTop: '3px solid #6B3FA0', padding: '16px',
             }}>
               <div style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#7A90A8', marginBottom: '8px' }}>
-                CHAMPS SUIVIS
+                {language === 'fr' ? 'CHAMPS SUIVIS' : 'FIELDS TRACKED'}
               </div>
               <div style={{ fontSize: '28px', fontWeight: 700, color: '#0A1628' }}>
-                {data.fields.length} champs
+                {data.fields.length} {language === 'fr' ? 'champs' : 'fields'}
               </div>
             </div>
           </div>
 
           {/* ── Section 2 : Complétude par champ ──────────────────────────── */}
           <div style={{ ...CARD_STYLE, marginBottom: '24px' }}>
-            <CardHeader title="Complétude par champ" subtitle="Pourcentage de données renseignées" />
+            <CardHeader title={language === 'fr' ? 'Complétude par champ' : 'Completeness by field'} subtitle={language === 'fr' ? 'Pourcentage de données renseignées' : 'Percentage of data filled'} />
             <div>
               {data.fields.map((field, idx) => {
                 const color = completenessColor(field.completeness_pct);
@@ -186,7 +186,7 @@ export default function QualityPage() {
 
           {/* ── Section 3 : Complétude par district ───────────────────────── */}
           <div style={CARD_STYLE}>
-            <CardHeader title="Complétude par district" subtitle="Score moyen de remplissage" />
+            <CardHeader title={language === 'fr' ? 'Complétude par district' : 'Completeness by district'} subtitle={language === 'fr' ? 'Score moyen de remplissage' : 'Average fill score'} />
             <ResponsiveContainer width="100%" height={Math.max(40 * data.by_district.length + 40, 200)}>
               <BarChart data={data.by_district} layout="vertical" margin={{ top: 4, right: 48, bottom: 4, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" />
@@ -199,7 +199,7 @@ export default function QualityPage() {
                 <YAxis type="category" dataKey="district" tick={{ fontSize: 11, fill: '#7A90A8' }} width={110} />
                 <Tooltip
                   contentStyle={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', fontSize: '12px' }}
-                  formatter={(v: number) => [`${v.toFixed(1)}%`, 'Complétude']}
+                  formatter={(v: number) => [`${v.toFixed(1)}%`, language === 'fr' ? 'Complétude' : 'Completeness']}
                 />
                 <Bar dataKey="completeness_pct" barSize={18} radius={[0, 3, 3, 0]}>
                   {data.by_district.map((entry) => (

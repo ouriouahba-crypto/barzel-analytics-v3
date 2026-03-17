@@ -116,7 +116,7 @@ function FieldWrap({ label, children }: { label: string; children: React.ReactNo
 }
 
 export default function PredictivePage() {
-  const { selectedDistricts } = useAppStore();
+  const { selectedDistricts, language } = useAppStore();
   const [form, setForm]       = useState<FormState>({ ...DEFAULTS, district: selectedDistricts[0] ?? 'Dubai Marina' });
   const [result, setResult]   = useState<PredictOutput | null>(null);
   const [loading, setLoading] = useState(false);
@@ -175,7 +175,7 @@ export default function PredictivePage() {
         Predictive Model
       </div>
       <div style={{ fontSize: '13px', color: '#7A90A8', marginTop: '4px' }}>
-        Estimation prix, yield et DOM par machine learning
+        {language === 'fr' ? 'Estimation prix, yield et DOM par machine learning' : 'Price, yield and DOM estimation using machine learning'}
       </div>
       <div style={{ width: '40px', height: '2px', background: '#C9A84C', margin: '12px 0 24px' }} />
 
@@ -185,7 +185,7 @@ export default function PredictivePage() {
         {/* ── Left : Form ───────────────────────────────────────────────── */}
         <div style={CARD_STYLE}>
           <div style={{ fontSize: '14px', fontWeight: 600, color: '#0A1628', marginBottom: '12px' }}>
-            Paramètres du bien
+            {language === 'fr' ? 'Paramètres du bien' : 'Property parameters'}
           </div>
           <div style={{ height: '1px', background: '#EEF1F6', marginBottom: '20px' }} />
 
@@ -197,7 +197,7 @@ export default function PredictivePage() {
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Type de bien">
+            <FieldWrap label={language === 'fr' ? 'Type de bien' : 'Property type'}>
               <select style={INPUT_STYLE} value={form.property_type} onChange={e => set('property_type', e.target.value)}>
                 {['apartment', 'villa', 'townhouse', 'penthouse'].map(v => (
                   <option key={v} value={v}>{v}</option>
@@ -205,19 +205,19 @@ export default function PredictivePage() {
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Chambres">
+            <FieldWrap label={language === 'fr' ? 'Chambres' : 'Bedrooms'}>
               <select style={INPUT_STYLE} value={form.bedrooms} onChange={e => set('bedrooms', Number(e.target.value))}>
                 {[0, 1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Salles de bain">
+            <FieldWrap label={language === 'fr' ? 'Salles de bain' : 'Bathrooms'}>
               <select style={INPUT_STYLE} value={form.bathrooms} onChange={e => set('bathrooms', Number(e.target.value))}>
                 {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Surface (sqm)">
+            <FieldWrap label={language === 'fr' ? 'Surface (sqm)' : 'Size (sqm)'}>
               <input type="number" style={INPUT_STYLE} min={20} max={1000}
                 value={form.size_sqm} onChange={e => set('size_sqm', Number(e.target.value))} />
             </FieldWrap>
@@ -227,19 +227,19 @@ export default function PredictivePage() {
                 value={form.floor_percentile} onChange={e => set('floor_percentile', Number(e.target.value))} />
             </FieldWrap>
 
-            <FieldWrap label="Vue (1–5)">
+            <FieldWrap label={language === 'fr' ? 'Vue (1–5)' : 'View (1–5)'}>
               <select style={INPUT_STYLE} value={form.view_quality} onChange={e => set('view_quality', Number(e.target.value))}>
                 {[1, 2, 3, 4, 5].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Rénovation">
+            <FieldWrap label={language === 'fr' ? 'Rénovation' : 'Renovation'}>
               <select style={INPUT_STYLE} value={form.renovation_status} onChange={e => set('renovation_status', e.target.value)}>
                 {['new', 'renovated', 'original'].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Âge (années)">
+            <FieldWrap label={language === 'fr' ? 'Âge (années)' : 'Age (years)'}>
               <input type="number" style={INPUT_STYLE} min={0} max={30}
                 value={form.age_years} onChange={e => set('age_years', Number(e.target.value))} />
             </FieldWrap>
@@ -250,41 +250,41 @@ export default function PredictivePage() {
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Balcon">
+            <FieldWrap label={language === 'fr' ? 'Balcon' : 'Balcony'}>
               <select style={INPUT_STYLE}
                 value={form.has_balcony ? 'true' : 'false'}
                 onChange={e => set('has_balcony', e.target.value === 'true')}>
-                <option value="true">Oui</option>
-                <option value="false">Non</option>
+                <option value="true">{language === 'fr' ? 'Oui' : 'Yes'}</option>
+                <option value="false">{language === 'fr' ? 'Non' : 'No'}</option>
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Chambre de bonne">
+            <FieldWrap label={language === 'fr' ? 'Chambre de bonne' : "Maid's room"}>
               <select style={INPUT_STYLE}
                 value={form.has_maids_room ? 'true' : 'false'}
                 onChange={e => set('has_maids_room', e.target.value === 'true')}>
-                <option value="true">Oui</option>
-                <option value="false">Non</option>
+                <option value="true">{language === 'fr' ? 'Oui' : 'Yes'}</option>
+                <option value="false">{language === 'fr' ? 'Non' : 'No'}</option>
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Ameublement">
+            <FieldWrap label={language === 'fr' ? 'Ameublement' : 'Furnishing'}>
               <select style={INPUT_STYLE} value={form.furnishing} onChange={e => set('furnishing', e.target.value)}>
                 {['unfurnished', 'semi-furnished', 'furnished'].map(v => <option key={v} value={v}>{v}</option>)}
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Dist. metro (m)">
+            <FieldWrap label={language === 'fr' ? 'Dist. metro (m)' : 'Dist. to metro (m)'}>
               <input type="number" style={INPUT_STYLE} min={0} max={5000}
                 value={form.dist_to_metro_m} onChange={e => set('dist_to_metro_m', Number(e.target.value))} />
             </FieldWrap>
 
-            <FieldWrap label="Dist. mall (m)">
+            <FieldWrap label={language === 'fr' ? 'Dist. mall (m)' : 'Dist. to mall (m)'}>
               <input type="number" style={INPUT_STYLE} min={0} max={5000}
                 value={form.dist_to_mall_m} onChange={e => set('dist_to_mall_m', Number(e.target.value))} />
             </FieldWrap>
 
-            <FieldWrap label="Dist. plage (m)">
+            <FieldWrap label={language === 'fr' ? 'Dist. plage (m)' : 'Dist. to beach (m)'}>
               <input type="number" style={INPUT_STYLE} min={0} max={10000}
                 value={form.dist_to_beach_m} onChange={e => set('dist_to_beach_m', Number(e.target.value))} />
             </FieldWrap>
@@ -295,7 +295,7 @@ export default function PredictivePage() {
                 onChange={e => set('service_charge_aed_per_sqm_year', Number(e.target.value))} />
             </FieldWrap>
 
-            <FieldWrap label="Mois">
+            <FieldWrap label={language === 'fr' ? 'Mois' : 'Month'}>
               <select style={INPUT_STYLE} value={form.month_listed} onChange={e => set('month_listed', Number(e.target.value))}>
                 {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
                   <option key={m} value={m}>{m}</option>
@@ -303,7 +303,7 @@ export default function PredictivePage() {
               </select>
             </FieldWrap>
 
-            <FieldWrap label="Année">
+            <FieldWrap label={language === 'fr' ? 'Année' : 'Year'}>
               <select style={INPUT_STYLE} value={form.year_listed} onChange={e => set('year_listed', Number(e.target.value))}>
                 {[2024, 2025, 2026].map(y => <option key={y} value={y}>{y}</option>)}
               </select>
@@ -333,7 +333,7 @@ export default function PredictivePage() {
                   transition: 'background 0.15s',
                 }}
               >
-                {loading ? 'Calcul en cours...' : 'Lancer la prédiction'}
+                {loading ? (language === 'fr' ? 'Calcul en cours...' : 'Calculating...') : (language === 'fr' ? 'Lancer la prédiction' : 'Run prediction')}
               </button>
             </div>
           </div>
@@ -343,7 +343,7 @@ export default function PredictivePage() {
         {result && (
           <div style={CARD_STYLE}>
             <div style={{ fontSize: '14px', fontWeight: 600, color: '#0A1628', marginBottom: '12px' }}>
-              Résultat de la prédiction
+              {language === 'fr' ? 'Résultat de la prédiction' : 'Prediction result'}
             </div>
             <div style={{ height: '1px', background: '#EEF1F6', marginBottom: '20px' }} />
 
@@ -351,23 +351,23 @@ export default function PredictivePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {[
                 {
-                  label: 'PRIX ESTIMÉ/SQM',
+                  label: language === 'fr' ? 'PRIX ESTIMÉ/SQM' : 'EST. PRICE/SQM',
                   value: `${result.predicted_price_per_sqm.toLocaleString('en-US')} AED`,
                   topColor: '#1E5FA8',
                 },
                 {
-                  label: 'PRIX TOTAL ESTIMÉ',
+                  label: language === 'fr' ? 'PRIX TOTAL ESTIMÉ' : 'EST. TOTAL PRICE',
                   value: fmtPrice(result.predicted_total_price),
                   topColor: '#0A1628',
                 },
                 {
-                  label: 'YIELD BRUT ESTIMÉ',
+                  label: language === 'fr' ? 'YIELD BRUT ESTIMÉ' : 'EST. GROSS YIELD',
                   value: `${result.predicted_gross_yield_pct.toFixed(2)}%`,
                   topColor: '#1A7A4A',
                 },
                 {
-                  label: 'DOM ESTIMÉ',
-                  value: `${Math.round(result.predicted_days_on_market)} jours`,
+                  label: language === 'fr' ? 'DOM ESTIMÉ' : 'EST. DOM',
+                  value: `${Math.round(result.predicted_days_on_market)} ${language === 'fr' ? 'jours' : 'days'}`,
                   topColor: '#C9A84C',
                 },
               ].map(({ label, value, topColor }) => (
@@ -389,7 +389,7 @@ export default function PredictivePage() {
 
             {/* Model confidence */}
             <div style={{ fontSize: '12px', fontWeight: 600, color: '#0A1628', marginTop: '20px', marginBottom: '10px' }}>
-              Confiance du modèle
+              {language === 'fr' ? 'Confiance du modèle' : 'Model confidence'}
             </div>
             {[
               { label: 'Prix R²',  r2: result.confidence.price_r2 },
@@ -414,7 +414,7 @@ export default function PredictivePage() {
 
             {/* Feature importance */}
             <div style={{ fontSize: '12px', fontWeight: 600, color: '#0A1628', marginTop: '20px', marginBottom: '10px' }}>
-              Variables clés (prix)
+              {language === 'fr' ? 'Variables clés (prix)' : 'Key features (price)'}
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={topFeatures} layout="vertical" margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>

@@ -99,7 +99,7 @@ export default function CostsPage() {
       setInsights(ins.costs);
       setLoading(false);
     }).catch((e) => {
-      setError(e.message ?? 'Erreur de chargement');
+      setError(e.message ?? (language === 'fr' ? 'Erreur de chargement' : 'Loading error'));
       setLoading(false);
     });
   }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -119,7 +119,7 @@ export default function CostsPage() {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#F4F6F9' }}>
         <div style={{ textAlign: 'center', color: '#7A90A8', fontSize: '14px' }}>
-          Sélectionnez au moins 1 district
+          {language === 'fr' ? 'Sélectionnez au moins 1 district' : 'Select at least 1 district'}
         </div>
       </div>
     );
@@ -241,7 +241,7 @@ export default function CostsPage() {
                         <div style={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', padding: '8px 12px', fontSize: '12px' }}>
                           <div style={{ fontWeight: 600, color: dc(d.district), marginBottom: '4px' }}>{d.district}</div>
                           <div>Service charge : {Math.round(d.median_service_charge ?? 0)} AED/sqm/yr</div>
-                          <div>Yield net : {(d.median_net_yield ?? 0).toFixed(2)}%</div>
+                          <div>{language === 'fr' ? 'Yield net' : 'Net yield'} : {(d.median_net_yield ?? 0).toFixed(2)}%</div>
                         </div>
                       );
                     }}

@@ -163,7 +163,7 @@ function PriceTooltip({ active, payload, label }: {
       <p style={{ fontWeight: 600, color: '#0A1628', marginBottom: 6 }}>{label}</p>
       {payload.map((p) => (
         <p key={p.name} style={{ color: p.color, marginBottom: 2 }}>
-          {p.name}: <strong>{p.value.toLocaleString('fr-FR')} AED/sqm</strong>
+          {p.name}: <strong>{p.value.toLocaleString('en-US')} AED/sqm</strong>
         </p>
       ))}
     </div>
@@ -295,7 +295,7 @@ export default function ExecutivePage() {
     },
     {
       label: t.kpi_listings,
-      value: loading ? null : snapshot ? snapshot.n_listings.toLocaleString('fr-FR') : '—',
+      value: loading ? null : snapshot ? snapshot.n_listings.toLocaleString('en-US') : '—',
       unit: '',
       sub: snapshot ? `CV ${snapshot.price_consistency_cv?.toFixed(1)}%` : undefined,
       delta: null,
@@ -433,7 +433,7 @@ export default function ExecutivePage() {
                   tickFormatter={(v: number) => `${Math.round(v / 1000)}k`} />
                 <YAxis dataKey="label" type="category" tick={{ fill: '#7A90A8', fontSize: 11 }} width={36} />
                 <Tooltip
-                  formatter={(v: number) => [`${v.toLocaleString('fr-FR')} AED/sqm`, 'Médiane']}
+                  formatter={(v: number) => [`${v.toLocaleString('en-US')} AED/sqm`, language === 'fr' ? 'Médiane' : 'Median']}
                   contentStyle={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: 6, fontSize: 12 }}
                   labelStyle={{ color: '#0A1628', fontWeight: 600 }}
                 />

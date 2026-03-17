@@ -116,7 +116,7 @@ export default function PricingPage() {
       setInsights(ins.pricing);
       setLoading(false);
     }).catch((e) => {
-      setError(e.message ?? 'Erreur de chargement');
+      setError(e.message ?? (language === 'fr' ? 'Erreur de chargement' : 'Loading error'));
       setLoading(false);
     });
   }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -165,7 +165,7 @@ export default function PricingPage() {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#F4F6F9' }}>
         <div style={{ textAlign: 'center', color: '#7A90A8', fontSize: '14px' }}>
-          Sélectionnez au moins 1 district
+          {language === 'fr' ? 'Sélectionnez au moins 1 district' : 'Select at least 1 district'}
         </div>
       </div>
     );
@@ -280,8 +280,8 @@ export default function PricingPage() {
                       return (
                         <div style={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', padding: '8px 12px', fontSize: '12px' }}>
                           <div style={{ fontWeight: 600, color: dc(d.district), marginBottom: '4px' }}>{d.district}</div>
-                          <div>Surface : {d.size_sqm?.toLocaleString('en-US')} sqm</div>
-                          <div>Prix/sqm : {d.price_per_sqm_aed?.toLocaleString('en-US')} AED</div>
+                          <div>{language === 'fr' ? 'Surface' : 'Size'} : {d.size_sqm?.toLocaleString('en-US')} sqm</div>
+                          <div>{language === 'fr' ? 'Prix/sqm' : 'Price/sqm'} : {d.price_per_sqm_aed?.toLocaleString('en-US')} AED</div>
                           <div>Yield : {d.gross_yield_pct?.toFixed(1)}%</div>
                         </div>
                       );

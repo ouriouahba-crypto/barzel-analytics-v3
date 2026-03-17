@@ -37,14 +37,14 @@ interface MetricDef {
 }
 
 const METRICS: MetricDef[] = [
-  { key: 'median_price_sqm',    label_fr: 'Médiane AED/sqm',   label_en: 'Median AED/sqm',    format: (v) => `${Math.round(v).toLocaleString('fr-FR')}`,  higherIsBetter: false },
+  { key: 'median_price_sqm',    label_fr: 'Médiane AED/sqm',   label_en: 'Median AED/sqm',    format: (v) => `${Math.round(v).toLocaleString('en-US')}`,  higherIsBetter: false },
   { key: 'median_dom',          label_fr: 'DOM médian',         label_en: 'Median DOM',         format: (v) => `${Math.round(v)}d`,                         higherIsBetter: false },
   { key: 'fast_sale_60d_pct',   label_fr: 'Fast-sale ≤60j',    label_en: 'Fast-sale ≤60d',    format: (v) => `${v.toFixed(1)}%`,                          higherIsBetter: true  },
   { key: 'median_net_yield',    label_fr: 'Yield net',          label_en: 'Net yield',          format: (v) => `${v.toFixed(2)}%`,                          higherIsBetter: true  },
   { key: 'median_gross_yield',  label_fr: 'Yield brut',         label_en: 'Gross yield',        format: (v) => `${v.toFixed(2)}%`,                          higherIsBetter: true  },
   { key: 'median_service_charge',label_fr: 'Service charge',    label_en: 'Service charge',     format: (v) => `${v.toFixed(0)} AED/sqm/yr`,                higherIsBetter: false },
   { key: 'median_vacancy_days', label_fr: 'Vacancy estimée',    label_en: 'Est. vacancy',       format: (v) => `${Math.round(v)}d`,                         higherIsBetter: false },
-  { key: 'n_listings',          label_fr: 'Nb annonces',        label_en: 'Listings',           format: (v) => `${Math.round(v).toLocaleString('fr-FR')}`,  higherIsBetter: true  },
+  { key: 'n_listings',          label_fr: 'Nb annonces',        label_en: 'Listings',           format: (v) => `${Math.round(v).toLocaleString('en-US')}`,  higherIsBetter: true  },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -346,7 +346,7 @@ export default function ComparePage() {
         {/* Ranking cards */}
         <Card style={{ padding: '20px 24px' }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: '#0A1628', marginBottom: 4 }}>{t.ranking}</div>
-          <div style={{ fontSize: 11, color: '#7A90A8', marginBottom: 16 }}>Classé par Barzel Score total</div>
+          <div style={{ fontSize: 11, color: '#7A90A8', marginBottom: 16 }}>{language === 'fr' ? 'Classé par Barzel Score total' : 'Ranked by total Barzel Score'}</div>
           <div style={{ height: 1, background: '#EEF1F6', marginBottom: 16 }} />
 
           {loading ? (

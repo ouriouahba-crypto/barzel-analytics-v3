@@ -33,7 +33,7 @@ function renderMarkdown(text: string) {
 }
 
 function formatTime(d: Date) {
-  return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
 
 export default function AiAnalystPage() {
@@ -72,7 +72,7 @@ export default function AiAnalystPage() {
       const data = await res.json();
       const assistantMsg: Message = {
         role: 'assistant',
-        content: data.answer || "Pas de réponse.",
+        content: data.answer || (language === 'fr' ? "Pas de réponse." : "No response."),
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, assistantMsg]);

@@ -71,14 +71,14 @@ export default function QualityPage() {
     setError(null);
     getDataQuality(selectedDistricts)
       .then((d) => { setData(d); setLoading(false); })
-      .catch((e) => { setError(e.message ?? 'Erreur de chargement'); setLoading(false); });
+      .catch((e) => { setError(e.message ?? (language === 'fr' ? 'Erreur de chargement' : 'Loading error')); setLoading(false); });
   }, [selectedDistricts]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (selectedDistricts.length === 0) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#F4F6F9' }}>
         <div style={{ textAlign: 'center', color: '#7A90A8', fontSize: '14px' }}>
-          Sélectionnez au moins 1 district
+          {language === 'fr' ? 'Sélectionnez au moins 1 district' : 'Select at least 1 district'}
         </div>
       </div>
     );

@@ -47,7 +47,7 @@ export default function PdfMemoPage() {
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Erreur lors de la génération du PDF');
+      setError(e instanceof Error ? e.message : (language === 'fr' ? 'Erreur lors de la génération du PDF' : 'Error generating the PDF'));
     } finally {
       setLoading(false);
     }

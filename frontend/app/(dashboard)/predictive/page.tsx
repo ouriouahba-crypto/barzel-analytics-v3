@@ -155,7 +155,7 @@ export default function PredictivePage() {
       const out = await predict(input);
       setResult(out);
     } catch (e: any) {
-      setError(e.message ?? 'Erreur de prédiction');
+      setError(e.message ?? (language === 'fr' ? 'Erreur de prédiction' : 'Prediction error'));
     } finally {
       setLoading(false);
     }

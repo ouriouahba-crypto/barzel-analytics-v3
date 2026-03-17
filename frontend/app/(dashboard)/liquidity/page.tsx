@@ -100,7 +100,7 @@ export default function LiquidityPage() {
       setInsights(ins.liquidity);
       setLoading(false);
     }).catch((e) => {
-      setError(e.message ?? 'Erreur de chargement');
+      setError(e.message ?? (language === 'fr' ? 'Erreur de chargement' : 'Loading error'));
       setLoading(false);
     });
   }, [selectedDistricts, language]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -125,7 +125,7 @@ export default function LiquidityPage() {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#F4F6F9' }}>
         <div style={{ textAlign: 'center', color: '#7A90A8', fontSize: '14px' }}>
-          Sélectionnez au moins 1 district
+          {language === 'fr' ? 'Sélectionnez au moins 1 district' : 'Select at least 1 district'}
         </div>
       </div>
     );
@@ -284,7 +284,7 @@ export default function LiquidityPage() {
                   <YAxis type="category" dataKey="district" tick={{ fontSize: 11, fill: '#7A90A8' }} width={100} />
                   <Tooltip
                     contentStyle={{ background: '#FFFFFF', border: '1px solid #D8E2EE', borderRadius: '6px', fontSize: '12px' }}
-                    formatter={(v: number) => [`${v} jours`, 'DOM médian']}
+                    formatter={(v: number) => [`${v} ${language === 'fr' ? 'jours' : 'days'}`, language === 'fr' ? 'DOM médian' : 'Median DOM']}
                   />
                   <Bar dataKey="median_dom" barSize={18} radius={[0, 3, 3, 0]}>
                     {domRanked.map((entry) => (

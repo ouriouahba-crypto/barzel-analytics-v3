@@ -9,15 +9,15 @@ from routers import analytics, predict, ask, pdf
 
 app = FastAPI(title="Barzel Analytics V3", version="3.0.0")
 
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+frontend_url = os.getenv("FRONTEND_URL", "")
+origins = [url for url in [
+    frontend_url.rstrip("/"),
+    "http://localhost:3000",
+] if url]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:3001",
-        FRONTEND_URL,
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
